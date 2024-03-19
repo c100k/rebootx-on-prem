@@ -1,0 +1,529 @@
+{
+    "openapi": "3.0.0",
+    "components": {
+        "examples": {},
+        "headers": {},
+        "parameters": {},
+        "requestBodies": {},
+        "responses": {},
+        "schemas": {
+            "RunnableScope": {
+                "description": "Corresponds to a \"context\" in which a runnable is.\nIt can be `geo`, defining the geographical zone where the runnable is (e.g. AWS regions code).\nIt can also be `logical`, defining an abstract structure where the runnable is (e.g. GCP project).",
+                "properties": {
+                    "label": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                },
+                "required": ["label", "value"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "RunnableScopes": {
+                "properties": {
+                    "geo": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RunnableScope"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "logical": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RunnableScope"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": ["geo", "logical"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "RunnableSSH": {
+                "properties": {
+                    "keyName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "port": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "username": {
+                        "type": "string"
+                    }
+                },
+                "required": ["keyName", "port", "username"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "RunnableStatus": {
+                "description": "Defines the actual status of a runnable.\nAny intermediary status that you have on your side must be mapped to the `pending` status.",
+                "enum": ["off", "on", "pending", "unknown"],
+                "type": "string"
+            },
+            "Runnable": {
+                "description": "Corresponds to something that \"runs\", can be \"stopped\" and \"rebooted\".\nTypical examples are cloud VMs, containers, PaaS applications, etc.",
+                "properties": {
+                    "flavor": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fqdn": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "ipv4": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "scopes": {
+                        "$ref": "#/components/schemas/RunnableScopes"
+                    },
+                    "ssh": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RunnableSSH"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "stack": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/RunnableStatus"
+                    }
+                },
+                "required": [
+                    "flavor",
+                    "fqdn",
+                    "id",
+                    "ipv4",
+                    "name",
+                    "scopes",
+                    "ssh",
+                    "stack",
+                    "status"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRes_Runnable_": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/Runnable"
+                        },
+                        "type": "array"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                },
+                "required": ["items", "total"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRunnablesRes": {
+                "$ref": "#/components/schemas/ListRes_Runnable_"
+            },
+            "ErrorRes": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Provided in english in a human readable way"
+                    }
+                },
+                "required": ["message"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRunnablesQueryParams": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "minimum": 0
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "minimum": 0
+                    },
+                    "q": {
+                        "type": "string",
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields."
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "RunnableOperationRes": {
+                "properties": {
+                    "jobId": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "If the process has been triggered on an asynchronous queue and will eventually succeed, you can provide this value here"
+                    }
+                },
+                "required": ["jobId"],
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "authorizationHeader": {
+                "in": "header",
+                "name": "authorization",
+                "type": "apiKey"
+            }
+        }
+    },
+    "info": {
+        "title": "RebootX On-Prem Specification",
+        "version": "0.1.0",
+        "description": "Find all the details about this specification on the [GitHub repository](https://github.com/c100k/rebootx-on-prem)."
+    },
+    "paths": {
+        "/runnables": {
+            "get": {
+                "operationId": "List",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListRunnablesRes"
+                                },
+                                "examples": {
+                                    "A list of items with their name, status, etc.": {
+                                        "value": {
+                                            "items": [
+                                                {
+                                                    "flavor": "medium",
+                                                    "fqdn": "server01.mycompany.com",
+                                                    "id": "123",
+                                                    "ipv4": "192.168.0.26",
+                                                    "name": "server01",
+                                                    "scopes": {
+                                                        "geo": {
+                                                            "label": "Paris 01",
+                                                            "value": "par-01"
+                                                        },
+                                                        "logical": {
+                                                            "label": "Project 1",
+                                                            "value": "project-1"
+                                                        }
+                                                    },
+                                                    "ssh": {
+                                                        "keyName": "keypair-01",
+                                                        "port": 22,
+                                                        "username": "admin"
+                                                    },
+                                                    "stack": "nodejs",
+                                                    "status": "off"
+                                                },
+                                                {
+                                                    "flavor": "medium",
+                                                    "fqdn": "server02.mycompany.com",
+                                                    "id": "456",
+                                                    "ipv4": "192.168.0.27",
+                                                    "name": "server02",
+                                                    "scopes": {
+                                                        "geo": {
+                                                            "label": "Paris 01",
+                                                            "value": "par-01"
+                                                        },
+                                                        "logical": {
+                                                            "label": "Project 1",
+                                                            "value": "project-1"
+                                                        }
+                                                    },
+                                                    "ssh": {
+                                                        "keyName": "keypair-01",
+                                                        "port": 22,
+                                                        "username": "admin"
+                                                    },
+                                                    "stack": "go",
+                                                    "status": "off"
+                                                }
+                                            ],
+                                            "total": 2
+                                        }
+                                    },
+                                    "An empty list": {
+                                        "value": {
+                                            "items": [],
+                                            "total": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "List the runnables with their name, status, etc.",
+                "summary": "List the runnables",
+                "tags": ["Runnable"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields.",
+                        "in": "query",
+                        "name": "q",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/runnables/reboot/{id}": {
+            "post": {
+                "operationId": "Reboot",
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RunnableOperationRes"
+                                },
+                                "examples": {
+                                    "The operation has been executed asynchronously and will eventually succeed": {
+                                        "value": {
+                                            "jobId": "e22df54c-09b2-47cc-be7f-128b15e609c4"
+                                        }
+                                    },
+                                    "The operation has been successfully executed synchronously": {
+                                        "value": {
+                                            "jobId": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Reboot a runnable",
+                "summary": "Reboot a runnable",
+                "tags": ["Runnable"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/runnables/stop/{id}": {
+            "post": {
+                "operationId": "Stop",
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RunnableOperationRes"
+                                },
+                                "examples": {
+                                    "The operation has been executed asynchronously and will eventually succeed": {
+                                        "value": {
+                                            "jobId": "e22df54c-09b2-47cc-be7f-128b15e609c4"
+                                        }
+                                    },
+                                    "The operation has been successfully executed synchronously": {
+                                        "value": {
+                                            "jobId": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Stop a runnable",
+                "summary": "Stop a runnable",
+                "tags": ["Runnable"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9001/cd5331ba/"
+        }
+    ]
+}
