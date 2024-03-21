@@ -98,7 +98,7 @@ func (service ServiceSelf) stop(id string) (*ServiceError, *openapi.RunnableOper
 
 func checkThatRunnableExists(config *Config, id string) *ServiceError {
 	if id != config.runnableId {
-		return &ServiceError{HttpStatus: 404, Message: "Runnable not found"}
+		return &ServiceError{HttpStatus: 404, Message: Err404Runnable}
 	}
 	return nil
 }
