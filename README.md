@@ -1,5 +1,7 @@
 # RebootX On-Prem
 
+![CI](https://github.com/c100k/rebootx-on-prem/actions/workflows/quality.yml/badge.svg)
+
 ## What is RebootX On-Prem?
 
 **RebootX On-Prem** is an open source specification for defining a custom server in order to manage on-premise _runnables_ in the [RebootX](https://c100k.eu/p/rebootx) app.
