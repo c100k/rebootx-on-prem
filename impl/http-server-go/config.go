@@ -63,27 +63,39 @@ func getConfig() *Config {
 		sysCmdStop:                 getEnvOr("SYS_CMD_STOP", "shutdown"),
 	}
 
+	assertServiceImpl(config)
+	assertServiceImplFileJson(config)
+	assertSysCmdPkg(config)
+
+	return &config
+}
+
+func assertServiceImpl(config Config) {
 	if config.serviceImpl != "fileJson" && config.serviceImpl != "noop" && config.serviceImpl != "self" {
 		panic(fmt.Sprintf("Valid values for serviceImpl are : 'fileJson' and 'noop' and 'self'. Got '%s'", config.serviceImpl))
 	}
+}
 
-	if config.serviceImpl == "fileJson" {
-		if config.serviceFileJsonFilePath == nil {
-			panic(fmt.Sprintf("You must provide a json file path when serviceImpl is 'fileJson'"))
-		} else {
-			path := *config.serviceFileJsonFilePath
-			_, err := os.Stat(path)
-			if err != nil {
-				panic(fmt.Sprintf("The file %s does not exist", path))
-			}
-		}
+func assertServiceImplFileJson(config Config) {
+	if config.serviceImpl != "fileJson" {
+		return
 	}
 
+	if config.serviceFileJsonFilePath == nil {
+		panic(fmt.Sprintf("You must provide a json file path when serviceImpl is 'fileJson'"))
+	}
+
+	path := *config.serviceFileJsonFilePath
+	_, err := os.Stat(path)
+	if err != nil {
+		panic(fmt.Sprintf("The file %s does not exist", path))
+	}
+}
+
+func assertSysCmdPkg(config Config) {
 	if config.sysCmdPkg != "exec" && config.sysCmdPkg != "syscall" {
 		panic(fmt.Sprintf("Valid values for sysCmdPkg are : 'exec' and 'syscall'. Got '%s'", config.sysCmdPkg))
 	}
-
-	return &config
 }
 
 func envName(key string) string {
