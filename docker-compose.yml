@@ -7,16 +7,23 @@ services:
       - RBTX_API_KEY=NkCH56YZfP9psrycDLVk
       - RBTX_PATH_PREFIX=cd5331ba
       - RBTX_PORT=9001
+      # fileJson
+      # - RBTX_SERVICE_IMPL=fileJson
+      # - RBTX_SERVICE_FILE_JSON_FILE_PATH=/data/servers.example.json
+      # noop (default)
       - RBTX_SERVICE_IMPL=noop
+      # self
+      # - RBTX_SERVICE_IMPL=self
     ports:
       - "9001:9001"
     volumes:
       - .docker/go:/go
+      - ./data:/data
       - ./impl/http-server-go:/app
     working_dir: "/app"
     command: >
       bash -c "go fmt
-      && go run main.go config.go data.go errors.go handlers.go middlewares.go service.go service_noop.go service_self.go utils.go"
+      && go run main.go config.go data.go errors.go handlers.go middlewares.go service.go service_file_json.go service_noop.go service_self.go utils.go"
   swagger-ui:
     image: swaggerapi/swagger-ui:v5.12.0
     environment:

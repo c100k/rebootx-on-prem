@@ -28,6 +28,7 @@ type Config struct {
 	runnableSSHUsername        string
 	runnableStack              string
 	serviceImpl                string
+	serviceFileJsonFilePath    *string
 	sysCmdPkg                  string
 	sysCmdReboot               string
 	sysCmdStop                 string
@@ -56,20 +57,45 @@ func getConfig() *Config {
 		runnableSSHUsername:        getEnvOr("RUNNABLE_SSH_USERNAME", "root"),
 		runnableStack:              getEnvOr("RUNNABLE_STACK", "nodejs"),
 		serviceImpl:                getEnvOr("SERVICE_IMPL", "noop"),
+		serviceFileJsonFilePath:    getNullableEnv("SERVICE_FILE_JSON_FILE_PATH"),
 		sysCmdPkg:                  getEnvOr("SYS_CMD_PKG", "syscall"),
 		sysCmdReboot:               getEnvOr("SYS_CMD_REBOOT", "reboot"),
 		sysCmdStop:                 getEnvOr("SYS_CMD_STOP", "shutdown"),
 	}
 
-	if config.serviceImpl != "noop" && config.serviceImpl != "self" {
-		panic(fmt.Sprintf("Valid values for serviceImpl are : 'noop' and 'self'. Got '%s'", config.serviceImpl))
+	assertServiceImpl(config)
+	assertServiceImplFileJson(config)
+	assertSysCmdPkg(config)
+
+	return &config
+}
+
+func assertServiceImpl(config Config) {
+	if config.serviceImpl != "fileJson" && config.serviceImpl != "noop" && config.serviceImpl != "self" {
+		panic(fmt.Sprintf("Valid values for serviceImpl are : 'fileJson' and 'noop' and 'self'. Got '%s'", config.serviceImpl))
+	}
+}
+
+func assertServiceImplFileJson(config Config) {
+	if config.serviceImpl != "fileJson" {
+		return
 	}
 
+	if config.serviceFileJsonFilePath == nil {
+		panic(fmt.Sprintf("You must provide a json file path when serviceImpl is 'fileJson'"))
+	}
+
+	path := *config.serviceFileJsonFilePath
+	_, err := os.Stat(path)
+	if err != nil {
+		panic(fmt.Sprintf("The file %s does not exist", path))
+	}
+}
+
+func assertSysCmdPkg(config Config) {
 	if config.sysCmdPkg != "exec" && config.sysCmdPkg != "syscall" {
 		panic(fmt.Sprintf("Valid values for sysCmdPkg are : 'exec' and 'syscall'. Got '%s'", config.sysCmdPkg))
 	}
-
-	return &config
 }
 
 func envName(key string) string {
@@ -99,4 +125,12 @@ func getEnvAsIntOr(key string, fallback int32) int32 {
 		return fallback
 	}
 	return *v
+}
+
+func getNullableEnv(key string) *string {
+	v := getEnvOr(key, "")
+	if len(v) == 0 {
+		return nil
+	}
+	return &v
 }

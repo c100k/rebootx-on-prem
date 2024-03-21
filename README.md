@@ -91,9 +91,10 @@ This is the implementation, used in the `docker-compose` command above, made in 
 There are multiple service implementations available :
 
 - `noop` (default) : as its name indicates, it does nothing except returning empty payloads
-- `self` : it returns the container as a runnable, hence the usage of self. Since the container is not running as root, you should get an error when calling `reboot` or `stop`. But be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually reboot or stop the machine.
+- `self` : it returns the container as a _runnable_, hence the usage of self. Since the container is not running as root, you should get an error when calling `reboot` or `stop`. But be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually reboot or stop the machine
+- `fileJson` : it grabs the _runnables_ from a JSON file that must respect the schema in order to be unmarshalled into an array of `Runnable` (see [servers.example.json](./data/servers.example.json))
 
-You can change the value by setting it int the ad-hoc environment variable (see `docker-compose.yml` or `config.go`).
+To override the default behavior, see `docker-compose.yml` or `config.go` and update the appropriate environment variables accordingly. 
 
 ## Contributing
 

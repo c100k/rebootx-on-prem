@@ -1,0 +1,50 @@
+[
+    {
+        "flavor": "medium",
+        "fqdn": "server01.mycompany.com",
+        "id": "123",
+        "ipv4": "192.168.0.26",
+        "name": "server01",
+        "scopes": {
+            "geo": {
+                "label": "Paris 01",
+                "value": "par-01"
+            },
+            "logical": {
+                "label": "Project 1",
+                "value": "project-1"
+            }
+        },
+        "ssh": {
+            "keyName": "keypair-01",
+            "port": 22,
+            "username": "admin"
+        },
+        "stack": "nodejs",
+        "status": "off"
+    },
+    {
+        "flavor": "medium",
+        "fqdn": "server02.mycompany.com",
+        "id": "456",
+        "ipv4": "192.168.0.27",
+        "name": "server02",
+        "scopes": {
+            "geo": {
+                "label": "Paris 01",
+                "value": "par-01"
+            },
+            "logical": {
+                "label": "Project 1",
+                "value": "project-1"
+            }
+        },
+        "ssh": {
+            "keyName": "keypair-01",
+            "port": 22,
+            "username": "admin"
+        },
+        "stack": "go",
+        "status": "off"
+    }
+]

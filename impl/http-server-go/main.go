@@ -16,12 +16,14 @@ func main() {
 
 	var service Service
 	switch config.serviceImpl {
+	case "fileJson":
+		service = ServiceFileJson{config: config, logger: logger}
 	case "noop":
 		service = ServiceNoop{logger: logger}
 	case "self":
 		service = ServiceSelf{config: config, logger: logger}
 	default:
-		panic("Invalid serviceImpl")
+		panic(fmt.Sprintf("Invalid serviceImpl : %s", config.serviceImpl))
 	}
 
 	router := mux.NewRouter()
