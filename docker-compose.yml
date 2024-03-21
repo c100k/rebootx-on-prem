@@ -3,10 +3,11 @@ services:
   http-server-go:
     image: golang:1.22
     environment:
-      # You can override any env var present in ./impl/http-server-go/config.go
+      # You can override any config value present in ./impl/http-server-go/config.go
       - RBTX_API_KEY=NkCH56YZfP9psrycDLVk
       - RBTX_PATH_PREFIX=cd5331ba
       - RBTX_PORT=9001
+      - RBTX_SERVICE_IMPL=noop
     ports:
       - "9001:9001"
     volumes:

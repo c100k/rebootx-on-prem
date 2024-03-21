@@ -55,7 +55,7 @@ func getConfig() *Config {
 		runnableSSHPort:            getEnvAsIntOr("RUNNABLE_SSH_PORT", int32(22)),
 		runnableSSHUsername:        getEnvOr("RUNNABLE_SSH_USERNAME", "root"),
 		runnableStack:              getEnvOr("RUNNABLE_STACK", "nodejs"),
-		serviceImpl:                getEnvOr("SERVICE_IMPL", "self"),
+		serviceImpl:                getEnvOr("SERVICE_IMPL", "noop"),
 		sysCmdPkg:                  getEnvOr("SYS_CMD_PKG", "syscall"),
 		sysCmdReboot:               getEnvOr("SYS_CMD_REBOOT", "reboot"),
 		sysCmdStop:                 getEnvOr("SYS_CMD_STOP", "shutdown"),

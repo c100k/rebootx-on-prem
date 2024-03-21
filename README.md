@@ -63,7 +63,7 @@ You should develop your own server to fit your personal needs and keep your infr
 
 As long as you respect the specification, you can develop in the language of your choice. To speed things up, you can generate some code using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
-For instance, you can generate [Rust](https://www.rust-lang.org) code with the following commands:
+For instance, you can generate [Rust](https://www.rust-lang.org) code with the following commands :
 
 ```sh
 docker run --rm \
@@ -86,18 +86,17 @@ Of course, you must serve it with `HTTPS` to secure the connection between the a
 
 ### HTTP Server Go
 
-You can have a look at one of the implementations at [impl/http-server-go](./impl/http-server-go).
+This is the implementation, used in the `docker-compose` command above, made in Go. You can browse the code at [impl/http-server-go](./impl/http-server-go).
 
-This is a simple example presenting an HTTP server made in Go, running on a _runnable_ to make it serve itself. That is the server used in the `docker-compose` command above.
+There are multiple service implementations available :
 
-Naturally, if you `stop` the server this way (_if you have enough permission_), you won't be able to `reboot` it the same way. Indeed, the http server is shutdown when the server goes down. That's why it must be used only for **prototyping**.
+- `noop` (default) : as its name indicates, it does nothing except returning empty payloads
+- `self` : it returns the container as a runnable, hence the usage of self. Since the container is not running as root, you should get an error when calling `reboot` or `stop`. But be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually reboot or stop the machine.
 
-It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so please be careful if you run it somewhere as `root`.
-
-### Others
-
-We welcome all kind of contributions to show examples in other languages. Feel free to reach out to us or to publish a PR. Only one thing : it must be clean and self contained in its own directory in [./impl](./impl).
+You can change the value by setting it int the ad-hoc environment variable (see `docker-compose.yml` or `config.go`).
 
 ## Contributing
 
-Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide.
+We welcome all kind of contributions to show examples in other languages. Feel free to reach out to us or to publish a PR. It must be clean and self contained in its own directory in [./impl](./impl).
+
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide first.
