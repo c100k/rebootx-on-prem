@@ -27,7 +27,7 @@ func getRunnablesHandler(service Service) func(w http.ResponseWriter, r *http.Re
 			params.SetOffset(*offset)
 		}
 
-		err, res := service.list(params)
+		res, err := service.list(params)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
@@ -45,7 +45,7 @@ func postRunnableRebootHandler(service Service) func(w http.ResponseWriter, r *h
 		vars := mux.Vars(r)
 		id := vars["id"]
 
-		err, res := service.reboot(id)
+		res, err := service.reboot(id)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
@@ -64,7 +64,7 @@ func postRunnableStopHandler(service Service) func(w http.ResponseWriter, r *htt
 		vars := mux.Vars(r)
 		id := vars["id"]
 
-		err, res := service.stop(id)
+		res, err := service.stop(id)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))

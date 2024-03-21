@@ -14,14 +14,14 @@ type ServiceSelf struct {
 	logger *slog.Logger
 }
 
-func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*ServiceError, *openapi.ListResRunnable) {
+func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
 	q := params.Q
 	if len(*q) > 0 {
 		err := checkThatRunnableExists(config, *q)
 		if err != nil {
-			return nil, openapi.NewListResRunnable([]openapi.Runnable{}, 0)
+			return openapi.NewListResRunnable([]openapi.Runnable{}, 0), nil
 		}
 	}
 
@@ -61,39 +61,39 @@ func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*Serv
 
 	res := openapi.NewListResRunnable(items, total)
 
-	return nil, res
+	return res, nil
 }
 
-func (service ServiceSelf) reboot(id string) (*ServiceError, *openapi.RunnableOperationRes) {
+func (service ServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 
 	errExec := execOperation(config, config.sysCmdReboot, syscall.LINUX_REBOOT_CMD_RESTART)
 	if errExec != nil {
-		return &ServiceError{HttpStatus: 500, Message: errExec.Error()}, nil
+		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
 
-	return nil, openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil))
+	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service ServiceSelf) stop(id string) (*ServiceError, *openapi.RunnableOperationRes) {
+func (service ServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 
 	errExec := execOperation(config, config.sysCmdStop, syscall.LINUX_REBOOT_CMD_POWER_OFF)
 	if errExec != nil {
-		return &ServiceError{HttpStatus: 500, Message: errExec.Error()}, nil
+		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
 
-	return nil, openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil))
+	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
 func checkThatRunnableExists(config *Config, id string) *ServiceError {

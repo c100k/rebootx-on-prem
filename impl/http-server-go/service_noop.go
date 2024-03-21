@@ -9,7 +9,7 @@ type ServiceNoop struct {
 	logger *slog.Logger
 }
 
-func (service ServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*ServiceError, *openapi.ListResRunnable) {
+func (service ServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	service.logger.Warn("Noop")
 
 	items := []openapi.Runnable{}
@@ -17,17 +17,17 @@ func (service ServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*Serv
 
 	res := openapi.NewListResRunnable(items, total)
 
-	return nil, res
+	return res, nil
 }
 
-func (service ServiceNoop) reboot(id string) (*ServiceError, *openapi.RunnableOperationRes) {
+func (service ServiceNoop) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	service.logger.Warn("Noop")
 
-	return nil, openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil))
+	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service ServiceNoop) stop(id string) (*ServiceError, *openapi.RunnableOperationRes) {
+func (service ServiceNoop) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	service.logger.Warn("Noop")
 
-	return nil, openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil))
+	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
