@@ -95,3 +95,7 @@ It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev
 ### Others
 
 We welcome all kind of contributions to show examples in other languages. Feel free to reach out to us or to publish a PR. Only one thing : it must be clean and self contained in its own directory in [./impl](./impl).
+
+## Contributing
+
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide.

@@ -1,0 +1,23 @@
+# CONTRIBUTING
+
+## Setup
+
+### Tools
+
+- [Docker](https://www.docker.com)
+- [Node](https://github.com/nvm-sh/nvm)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install)
+- [Go](https://go.dev)
+
+### Init
+
+```sh
+git clone git@github.com:c100k/rebootx-on-prem.git
+yarn install
+```
+
+## Commit messages
+
+Everyone must follow the [Conventional Commits](https://www.conventionalcommits.org) convention.
+
+Yes it's opinionated, yes it's strict, but that's how we all understand each other.
