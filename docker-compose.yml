@@ -17,7 +17,6 @@ services:
     ports:
       - "9001:9001"
     volumes:
-      - .docker/go:/go
       - ./data:/data
       - ./impl/http-server-go:/app
     working_dir: "/app"
