@@ -1,12 +1,9 @@
 package main
 
 import (
-	"errors"
 	"log/slog"
 	"openapi"
 	"os"
-	"os/exec"
-	"syscall"
 )
 
 type ServiceSelf struct {
@@ -72,7 +69,7 @@ func (service ServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *Se
 		return nil, err
 	}
 
-	errExec := execOperation(config, config.sysCmdReboot, syscall.LINUX_REBOOT_CMD_RESTART)
+	errExec := performOpOnSelf(config, REBOOT)
 	if errExec != nil {
 		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
@@ -88,7 +85,7 @@ func (service ServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *Serv
 		return nil, err
 	}
 
-	errExec := execOperation(config, config.sysCmdStop, syscall.LINUX_REBOOT_CMD_POWER_OFF)
+	errExec := performOpOnSelf(config, STOP)
 	if errExec != nil {
 		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
@@ -101,18 +98,6 @@ func checkThatRunnableExists(config *Config, id string) *ServiceError {
 		return &ServiceError{HttpStatus: 404, Message: Err404Runnable}
 	}
 	return nil
-}
-
-func execOperation(config *Config, forExec string, forSyscall int) error {
-	switch config.sysCmdPkg {
-	case "exec":
-		cmd := exec.Command(forExec)
-		return cmd.Run()
-	case "syscall":
-		return syscall.Reboot(forSyscall)
-	default:
-		return errors.New("Invalid sysCmdPkg")
-	}
 }
 
 func nameFromHostname(config *Config) string {

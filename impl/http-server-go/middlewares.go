@@ -28,7 +28,7 @@ func authMiddleware(config *Config) func(http.Handler) http.Handler {
 	}
 }
 
-func headerMiddleware(config *Config) func(http.Handler) http.Handler {
+func headerMiddleware(_ *Config) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", CONTENT_TYPE)
@@ -38,7 +38,7 @@ func headerMiddleware(config *Config) func(http.Handler) http.Handler {
 	}
 }
 
-func logMiddleware(config *Config, logger *slog.Logger) func(http.Handler) http.Handler {
+func logMiddleware(_ *Config, logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			logger.Info(fmt.Sprintf("%s %s", r.Method, r.URL))

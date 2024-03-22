@@ -10,14 +10,11 @@ type Config struct {
 	bind                       string
 	pathPrefix                 string
 	port                       int32
-	provider                   string
 	protocol                   string
 	runnableFlavor             string
 	runnableFQDN               string
-	runnableGroupIdentifier    string
 	runnableId                 string
 	runnableIPv4               string
-	runnableKind               string
 	runnableNameFallback       string
 	runnableScopesGeoLabel     string
 	runnableScopesGeoValue     string
@@ -30,8 +27,6 @@ type Config struct {
 	serviceImpl                string
 	serviceFileJsonFilePath    *string
 	sysCmdPkg                  string
-	sysCmdReboot               string
-	sysCmdStop                 string
 }
 
 const ENV_VAR_PREFIX = "RBTX_"
@@ -59,8 +54,6 @@ func getConfig() *Config {
 		serviceImpl:                getEnvOr("SERVICE_IMPL", "noop"),
 		serviceFileJsonFilePath:    getNullableEnv("SERVICE_FILE_JSON_FILE_PATH"),
 		sysCmdPkg:                  getEnvOr("SYS_CMD_PKG", "syscall"),
-		sysCmdReboot:               getEnvOr("SYS_CMD_REBOOT", "reboot"),
-		sysCmdStop:                 getEnvOr("SYS_CMD_STOP", "shutdown"),
 	}
 
 	assertServiceImpl(config)
@@ -82,7 +75,7 @@ func assertServiceImplFileJson(config Config) {
 	}
 
 	if config.serviceFileJsonFilePath == nil {
-		panic(fmt.Sprintf("You must provide a json file path when serviceImpl is 'fileJson'"))
+		panic("You must provide a json file path when serviceImpl is 'fileJson'")
 	}
 
 	path := *config.serviceFileJsonFilePath

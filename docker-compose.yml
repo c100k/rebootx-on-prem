@@ -20,9 +20,7 @@ services:
       - ./data:/data
       - ./impl/http-server-go:/app
     working_dir: "/app"
-    command: >
-      bash -c "go fmt
-      && go run main.go config.go data.go errors.go handlers.go middlewares.go service.go service_file_json.go service_noop.go service_self.go utils.go"
+    command: bash -c "go fmt && go build -o /build/http-server-go -v && /build/http-server-go"
   swagger-ui:
     image: swaggerapi/swagger-ui:v5.12.0
     environment:
