@@ -7,8 +7,51 @@
         "requestBodies": {},
         "responses": {},
         "schemas": {
+            "RunnableMetric": {
+                "description": "A metric associated to a runnable",
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Try to keep it short to have a great and more readable display in the app (i.e. \"CPU\", \"RAM\", \"Proc #\")"
+                    },
+                    "ratio": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true,
+                        "description": "The ratio of the value compared to its maximum.\nFor example, if you have 1024 of RAM and 256 are being used, the ratio should be 256 / 1024 = 0.25",
+                        "maximum": 1,
+                        "minimum": 0
+                    },
+                    "thresholds": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array",
+                        "nullable": true,
+                        "description": "If provided, it must be an array of two numbers.\nThey respectively define the limits for \"warning\" and \"danger\".\nTo illustrate with CPU usage, these values could be [60, 80].\nIn this case, if value < 60, it will be \"success\".\nIf value < 80 it will be \"warning\".\nEverything else will be \"danger\".\nIf the first value is greater than the second one (i.e. higher is better), the semantics are reversed.",
+                        "maxItems": 2,
+                        "minItems": 2
+                    },
+                    "unit": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Like for the label, try to keep it short to have a great and more readable display (i.e. \"MB\", \"%\", \"GB/s\")"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true,
+                        "description": "Format it correctly so it's displayed correctly in the app.\nIf it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)"
+                    }
+                },
+                "required": ["label", "ratio", "thresholds", "unit", "value"],
+                "type": "object",
+                "additionalProperties": false
+            },
             "RunnableScope": {
-                "description": "Corresponds to a \"context\" in which a runnable is.\nIt can be `geo`, defining the geographical zone where the runnable is (e.g. AWS regions code).\nIt can also be `logical`, defining an abstract structure where the runnable is (e.g. GCP project).",
+                "description": "The context in which a runnable is\nIt can be `geo`, defining the geographical zone where the runnable is (e.g. AWS regions code).\nIt can also be `logical`, defining an abstract structure where the runnable is (e.g. GCP project).",
                 "properties": {
                     "label": {
                         "type": "string"
@@ -22,6 +65,7 @@
                 "additionalProperties": false
             },
             "RunnableScopes": {
+                "description": "The scopes in which the runnable is",
                 "properties": {
                     "geo": {
                         "allOf": [
@@ -45,6 +89,7 @@
                 "additionalProperties": false
             },
             "RunnableSSH": {
+                "description": "The configuration to define how to SSH into the runnable",
                 "properties": {
                     "keyName": {
                         "type": "string",
@@ -64,12 +109,12 @@
                 "additionalProperties": false
             },
             "RunnableStatus": {
-                "description": "Defines the actual status of a runnable.\nAny intermediary status that you have on your side must be mapped to the `pending` status.",
+                "description": "The status of a runnable\nAny intermediary status that you have on your side must be mapped to the `pending` status.",
                 "enum": ["off", "on", "pending", "unknown"],
                 "type": "string"
             },
             "Runnable": {
-                "description": "Corresponds to something that \"runs\", can be \"stopped\" and \"rebooted\".\nTypical examples are cloud VMs, containers, PaaS applications, etc.",
+                "description": "Anything that runs, can be stopped and rebooted\nTypical examples are cloud VMs, containers, PaaS applications, etc.",
                 "properties": {
                     "flavor": {
                         "type": "string",
@@ -84,6 +129,13 @@
                     },
                     "ipv4": {
                         "type": "string",
+                        "nullable": true
+                    },
+                    "metrics": {
+                        "items": {
+                            "$ref": "#/components/schemas/RunnableMetric"
+                        },
+                        "type": "array",
                         "nullable": true
                     },
                     "name": {
@@ -113,6 +165,7 @@
                     "fqdn",
                     "id",
                     "ipv4",
+                    "metrics",
                     "name",
                     "scopes",
                     "ssh",
@@ -177,11 +230,12 @@
                 "additionalProperties": false
             },
             "RunnableOperationRes": {
+                "description": "The response of a reboot, stop operation",
                 "properties": {
                     "jobId": {
                         "type": "string",
                         "nullable": true,
-                        "description": "If the process has been triggered on an asynchronous queue and will eventually succeed, you can provide this value here"
+                        "description": "If the operation is triggered via an asynchronous queue and will eventually succeed, the id can be provided here for information"
                     }
                 },
                 "required": ["jobId"],
@@ -223,6 +277,26 @@
                                                     "fqdn": "server01.mycompany.com",
                                                     "id": "123",
                                                     "ipv4": "192.168.0.26",
+                                                    "metrics": [
+                                                        {
+                                                            "label": "CPU",
+                                                            "ratio": null,
+                                                            "thresholds": [
+                                                                65, 85
+                                                            ],
+                                                            "unit": "%",
+                                                            "value": 28
+                                                        },
+                                                        {
+                                                            "label": "RAM",
+                                                            "ratio": 0.125,
+                                                            "thresholds": [
+                                                                3000, 3800
+                                                            ],
+                                                            "unit": "MB",
+                                                            "value": 512
+                                                        }
+                                                    ],
                                                     "name": "server01",
                                                     "scopes": {
                                                         "geo": {
@@ -247,6 +321,26 @@
                                                     "fqdn": "server02.mycompany.com",
                                                     "id": "456",
                                                     "ipv4": "192.168.0.27",
+                                                    "metrics": [
+                                                        {
+                                                            "label": "CPU",
+                                                            "ratio": null,
+                                                            "thresholds": [
+                                                                65, 85
+                                                            ],
+                                                            "unit": "%",
+                                                            "value": 82
+                                                        },
+                                                        {
+                                                            "label": "RAM",
+                                                            "ratio": 0.25,
+                                                            "thresholds": [
+                                                                3000, 3800
+                                                            ],
+                                                            "unit": "GB",
+                                                            "value": 1
+                                                        }
+                                                    ],
                                                     "name": "server02",
                                                     "scopes": {
                                                         "geo": {
