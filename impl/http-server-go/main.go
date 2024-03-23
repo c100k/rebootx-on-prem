@@ -26,6 +26,8 @@ func main() {
 		panic(fmt.Sprintf("Invalid serviceImpl : %s", config.serviceImpl))
 	}
 
+	logger.Info(fmt.Sprintf("Using serviceImpl : %s", config.serviceImpl))
+
 	router := mux.NewRouter()
 
 	router.Use(logMiddleware(config, logger))

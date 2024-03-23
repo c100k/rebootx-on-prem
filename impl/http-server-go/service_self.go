@@ -22,12 +22,15 @@ func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*open
 		}
 	}
 
+	metrics := []openapi.RunnableMetric{}
+
 	items := []openapi.Runnable{
 		*openapi.NewRunnable(
 			*openapi.NewNullableString(&config.runnableFlavor),
 			*openapi.NewNullableString(&config.runnableFQDN),
 			config.runnableId,
 			*openapi.NewNullableString(&config.runnableIPv4),
+			metrics,
 			nameFromHostname(config),
 			*openapi.NewRunnableScopes(
 				*openapi.NewNullableRunnableScope(
