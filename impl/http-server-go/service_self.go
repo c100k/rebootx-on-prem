@@ -8,6 +8,7 @@ import (
 
 	"github.com/mackerelio/go-osstat/cpu"
 	"github.com/mackerelio/go-osstat/memory"
+	"github.com/mackerelio/go-osstat/uptime"
 )
 
 type ServiceSelf struct {
@@ -22,6 +23,7 @@ const MEMORY_METRIC_UNIT = "MB"
 const MEMORY_METRIC_UNIT_AS_BYTES = 10e6
 const THRESHOLD_WARNING = 0.75
 const THRESHOLD_DANGER = 0.85
+const UPTIME_METRIC_LABEL = "Uptime"
 
 func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
@@ -44,6 +46,11 @@ func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*open
 	memory, err := memory.Get()
 	if err == nil {
 		metrics = append(metrics, *buildMemoryMetric(memory.Used, memory.Total))
+	}
+
+	uptime, err := uptime.Get()
+	if err == nil {
+		metrics = append(metrics, *buildUptimeMetric(uptime))
 	}
 
 	items := []openapi.Runnable{
@@ -145,6 +152,30 @@ func buildMemoryMetric(used uint64, total uint64) *openapi.RunnableMetric {
 		*openapi.NewNullableFloat64(&ratio),
 		[]float64{warning, danger},
 		*openapi.NewNullableString(ptr(MEMORY_METRIC_UNIT)),
+		*openapi.NewNullableFloat64(&value),
+	)
+
+	return metric
+}
+
+func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
+	value := uptime.Hours()
+	unit := "h"
+	if value < 1.0 {
+		value = uptime.Minutes()
+		unit = "min"
+		if value < 1.0 {
+			value = uptime.Seconds()
+			unit = "s"
+		}
+	}
+	value = roundToCloser(value)
+
+	metric := openapi.NewRunnableMetric(
+		*openapi.NewNullableString(ptr(UPTIME_METRIC_LABEL)),
+		*openapi.NewNullableFloat64(nil),
+		[]float64{},
+		*openapi.NewNullableString(&unit),
 		*openapi.NewNullableFloat64(&value),
 	)
 

@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestBuildCPUMetric(t *testing.T) {
 	// Given
@@ -44,5 +47,43 @@ func TestBuildMemoryMetric(t *testing.T) {
 	expectedValue := 1433.33
 	if value != expectedValue {
 		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
+	}
+}
+
+func TestBuildUptimeMetric(t *testing.T) {
+	// Given
+	uptime, _ := time.ParseDuration("0h34m")
+
+	// When
+	metric := buildUptimeMetric(uptime)
+	value := *metric.Value.Get()
+	unit := *metric.Unit.Get()
+
+	// Then
+	expectedValue := 34.0
+	if value != expectedValue {
+		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
+	}
+	expectedUnit := "min"
+	if unit != expectedUnit {
+		t.Fatalf("Expected unit to be %s, actual %s", expectedUnit, unit)
+	}
+
+	// Given
+	uptime, _ = time.ParseDuration("2h34m")
+
+	// When
+	metric = buildUptimeMetric(uptime)
+	value = *metric.Value.Get()
+	unit = *metric.Unit.Get()
+
+	// Then
+	expectedValue = 2.57
+	if value != expectedValue {
+		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
+	}
+	expectedUnit = "h"
+	if unit != expectedUnit {
+		t.Fatalf("Expected unit to be %s, actual %s", expectedUnit, unit)
 	}
 }
