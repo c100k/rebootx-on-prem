@@ -7,31 +7,47 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       # https://github.com/actions/cache/blob/main/examples.md#node---yarn
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-      - name: Uncache Yarn dependencies
-        uses: actions/cache@v2
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            **/node_modules
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      # https://github.com/actions/cache/blob/main/examples.md#linux-1
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - name: Install dependencies
         run: |
           yarn install
+          (cd impl/http-server-go && go mod vendor)
+          wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
+          java -jar openapi-generator-cli.jar generate -i ./spec/_generated/swagger.json -g go -o ./impl/http-server-go/vendor/openapi
 
       - name: Lint
         run: |
           yarn lint:ci
 
-      - name: Test
+      - name: Test impl/http-server-go
+        working-directory: ./impl/http-server-go
         run: |
-          yarn test:ci
+          go test -v
+
+      - name: Test spec
+        run: |
+          yarn test

@@ -38,7 +38,7 @@ oven/bun run \
 # Generate Go code with OpenAPI Generator
 docker run --rm \
 -v ./:/app \
-openapitools/openapi-generator-cli generate \
+openapitools/openapi-generator-cli:v7.4.0 generate \
 -i /app/spec/_generated/swagger.json \
 -g go \
 -o /app/impl/http-server-go/vendor/openapi
