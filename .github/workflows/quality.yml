@@ -34,7 +34,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          go mod vendor
           yarn install
           (cd impl/http-server-go && go mod vendor)
           wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
