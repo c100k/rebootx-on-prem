@@ -42,7 +42,7 @@ jobs:
       # https://github.com/marketplace/actions/docker-run-action
       - uses: addnab/docker-run-action@v3
         with:
-          image: openapitools/openapi-generator-cli:7.4.0
+          image: openapitools/openapi-generator-cli:v7.4.0
           options: -v ${{ github.workspace }}:/app
           run: |
             generate -i /app/spec/_generated/swagger.json -g go -o /app/impl/http-server-go/vendor/openapi
