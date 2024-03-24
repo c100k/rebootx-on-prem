@@ -39,14 +39,6 @@ jobs:
           wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
           java -jar openapi-generator-cli.jar generate -i ./spec/_generated/swagger.json -g go -o ./impl/http-server-go/vendor/openapi
 
-      # https://github.com/marketplace/actions/docker-run-action
-      - uses: addnab/docker-run-action@v3
-        with:
-          image: openapitools/openapi-generator-cli:v7.4.0
-          options: -v ${{ github.workspace }}:/app
-          run: |
-            generate -i /app/spec/_generated/swagger.json -g go -o /app/impl/http-server-go/vendor/openapi
-
       - name: Lint
         run: |
           yarn lint:ci
