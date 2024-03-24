@@ -46,6 +46,7 @@ jobs:
       - name: Test impl/http-server-go
         working-directory: ./impl/http-server-go
         run: |
+          go mod vendor
           go test -v
 
       - name: Test spec
