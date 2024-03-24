@@ -2,6 +2,7 @@ package main
 
 import (
 	"log/slog"
+	"math"
 	"openapi"
 	"os"
 	"time"
@@ -169,7 +170,7 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 			unit = "s"
 		}
 	}
-	value = roundToCloser(value)
+	value = math.Round(value)
 
 	metric := openapi.NewRunnableMetric(
 		*openapi.NewNullableString(ptr(UPTIME_METRIC_LABEL)),

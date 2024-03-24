@@ -78,7 +78,7 @@ func TestBuildUptimeMetric(t *testing.T) {
 	unit = *metric.Unit.Get()
 
 	// Then
-	expectedValue = 2.57
+	expectedValue = 3.00
 	if value != expectedValue {
 		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
 	}
