@@ -7,3 +7,11 @@ github.com/gorilla/handlers
 # github.com/gorilla/mux v1.8.1
 ## explicit; go 1.20
 github.com/gorilla/mux
+# github.com/mackerelio/go-osstat v0.2.4
+## explicit; go 1.18
+github.com/mackerelio/go-osstat/cpu
+github.com/mackerelio/go-osstat/memory
+github.com/mackerelio/go-osstat/uptime
+# golang.org/x/sys v0.18.0
+## explicit; go 1.18
+golang.org/x/sys/unix

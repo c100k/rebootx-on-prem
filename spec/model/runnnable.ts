@@ -10,7 +10,49 @@ export interface ListRunnablesQueryParams extends ListQueryParams {
 export type ListRunnablesRes = ListRes<Runnable>;
 
 /**
- * Defines the actual status of a runnable.
+ * A metric associated to a runnable
+ */
+export interface RunnableMetric {
+    /**
+     * Try to keep it short to have a great and more readable display in the app (i.e. "CPU", "RAM", "Proc #")
+     */
+    label: string | null;
+
+    /**
+     * The ratio of the value compared to its maximum.
+     * For example, if you have 1024 of RAM and 256 are being used, the ratio should be 256 / 1024 = 0.25
+     * @maximum 1.0
+     * @minimum 0.0
+     */
+    ratio: number | null;
+
+    /**
+     * If provided, it must be an array of two numbers.
+     * They respectively define the limits for "warning" and "danger".
+     * To illustrate with CPU usage, these values could be [60, 80].
+     * In this case, if value < 60, it will be "success".
+     * If value < 80 it will be "warning".
+     * Everything else will be "danger".
+     * If the first value is greater than the second one (i.e. higher is better), the semantics are reversed.
+     * @maxItems 2
+     * @minItems 2
+     */
+    thresholds: number[] | null;
+
+    /**
+     * Like for the label, try to keep it short to have a great and more readable display (i.e. "MB", "%", "GB/s")
+     */
+    unit: string | null;
+
+    /**
+     * Format it so it's displayed correctly in the app.
+     * If it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)
+     */
+    value: number | null;
+}
+
+/**
+ * The status of a runnable
  * Any intermediary status that you have on your side must be mapped to the `pending` status.
  */
 export enum RunnableStatus {
@@ -21,7 +63,7 @@ export enum RunnableStatus {
 }
 
 /**
- * Corresponds to a "context" in which a runnable is.
+ * The context in which a runnable is
  * It can be `geo`, defining the geographical zone where the runnable is (e.g. AWS regions code).
  * It can also be `logical`, defining an abstract structure where the runnable is (e.g. GCP project).
  */
@@ -30,6 +72,9 @@ export interface RunnableScope {
     value: string;
 }
 
+/**
+ * The configuration to define how to SSH into the runnable
+ */
 export interface RunnableSSH {
     keyName: string | null;
 
@@ -42,13 +87,16 @@ export interface RunnableSSH {
     username: string;
 }
 
+/**
+ * The scopes in which the runnable is
+ */
 export interface RunnableScopes {
     geo: RunnableScope | null;
     logical: RunnableScope | null;
 }
 
 /**
- * Corresponds to something that "runs", can be "stopped" and "rebooted".
+ * Anything that runs, can be stopped and rebooted
  * Typical examples are cloud VMs, containers, PaaS applications, etc.
  */
 export interface Runnable {
@@ -56,6 +104,7 @@ export interface Runnable {
     fqdn: string | null;
     id: string;
     ipv4: string | null;
+    metrics: RunnableMetric[] | null;
     name: string;
     scopes: RunnableScopes;
     ssh: RunnableSSH | null;
@@ -63,9 +112,12 @@ export interface Runnable {
     status: RunnableStatus;
 }
 
+/**
+ * The response of a reboot, stop operation
+ */
 export interface RunnableOperationRes {
     /**
-     * If the process has been triggered on an asynchronous queue and will eventually succeed, you can provide this value here
+     * If the operation is triggered via an asynchronous queue and will eventually succeed, the id can be provided here for information
      */
     jobId: string | null;
 }

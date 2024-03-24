@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"math"
+	"strconv"
+)
 
 func parseInt(raw *string) *int32 {
 	if raw == nil {
@@ -15,4 +18,12 @@ func parseInt(raw *string) *int32 {
 	asInt32 := int32(v)
 
 	return &asInt32
+}
+
+func ptr[T float64 | string](v T) *T {
+	return &v
+}
+
+func roundToCloser(v float64) float64 {
+	return math.Round(v*100) / 100
 }

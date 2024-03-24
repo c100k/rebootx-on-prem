@@ -23,6 +23,22 @@ export const RUNNABLES: ListRunnablesRes = {
             fqdn: 'server01.mycompany.com',
             id: '123',
             ipv4: '192.168.0.26',
+            metrics: [
+                {
+                    label: 'CPU',
+                    ratio: null,
+                    thresholds: [65, 85],
+                    unit: '%',
+                    value: 28,
+                },
+                {
+                    label: 'RAM',
+                    ratio: 0.125,
+                    thresholds: [3000, 3800],
+                    unit: 'MB',
+                    value: 512,
+                },
+            ],
             name: 'server01',
             scopes: {
                 geo: {
@@ -47,6 +63,22 @@ export const RUNNABLES: ListRunnablesRes = {
             fqdn: 'server02.mycompany.com',
             id: '456',
             ipv4: '192.168.0.27',
+            metrics: [
+                {
+                    label: 'CPU',
+                    ratio: null,
+                    thresholds: [65, 85],
+                    unit: '%',
+                    value: 82,
+                },
+                {
+                    label: 'RAM',
+                    ratio: 0.25,
+                    thresholds: [3000, 3800],
+                    unit: 'GB',
+                    value: 1,
+                },
+            ],
             name: 'server02',
             scopes: {
                 geo: {
