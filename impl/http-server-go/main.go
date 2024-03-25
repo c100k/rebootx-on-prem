@@ -37,8 +37,8 @@ func main() {
 	rootPath := fmt.Sprintf("/%s/runnables", config.pathPrefix)
 
 	router.HandleFunc(rootPath, getRunnablesHandler(service)).Methods("GET")
-	router.HandleFunc(fmt.Sprintf("%s/reboot/{id}", rootPath), postRunnableRebootHandler(service)).Methods("POST")
-	router.HandleFunc(fmt.Sprintf("%s/stop/{id}", rootPath), postRunnableStopHandler(service)).Methods("POST")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/reboot", rootPath), postRunnableRebootHandler(service)).Methods("POST")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/stop", rootPath), postRunnableStopHandler(service)).Methods("POST")
 
 	headersCORS := handlers.AllowedHeaders([]string{AUTHORIZATION_HEADER, "Content-Type", "Origin"})
 	methodsCORS := handlers.AllowedMethods([]string{"GET", "HEAD", "OPTIONS", "POST"})
