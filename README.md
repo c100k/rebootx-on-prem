@@ -34,10 +34,8 @@ You can play with it by loading it locally in [SwaggerUI](https://swagger.io/too
 
 ```sh
 # Generate swagger.json (optional since it's already present in the repository)
-docker run --rm \
--v $(pwd)/spec:/spec \
-oven/bun run \
-/spec/generate-swagger.ts
+docker run --rm -v $(pwd):/app oven/bun run /app/spec/generate-swagger.ts
+yarn lint
 
 # Generate Go code with OpenAPI Generator
 docker run --rm \

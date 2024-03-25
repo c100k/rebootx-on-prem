@@ -1,10 +1,23 @@
+import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 import { ExtendedSpecConfig, generateSpec } from 'tsoa';
 
-const basePath = join('/spec');
-const controllersPath = join(basePath, 'controllers', '**', '*Controller.ts');
-const outputDirectory = join(basePath, '_generated');
+const basePath = join('/app');
+
+const pkgJsonPath = join(basePath, 'package.json');
+const pkgJsonBuff = await readFile(pkgJsonPath);
+const pkgJson = pkgJsonBuff.toString();
+const { version }: { version: string } = JSON.parse(pkgJson);
+
+const specBasePath = join(basePath, 'spec');
+const controllersPath = join(
+    specBasePath,
+    'controllers',
+    '**',
+    '*Controller.ts',
+);
+const outputDirectory = join(specBasePath, '_generated');
 
 const specOptions: ExtendedSpecConfig = {
     basePath: '/',
@@ -24,7 +37,7 @@ const specOptions: ExtendedSpecConfig = {
         },
     },
     specVersion: 3,
-    version: '0.1.0',
+    version,
 };
 
 await generateSpec(specOptions);
