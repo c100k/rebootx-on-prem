@@ -59,11 +59,11 @@ curl -v -X POST -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runn
 
 ## Creating your own server
 
-You should develop your own server to fit your personal needs and keep your infra private.
+You can develop your own server to fit your personal needs and keep control on everything that runs on your infra.
 
-As long as you respect the specification, you can develop in the language of your choice. To speed things up, you can generate some code using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
+As long as you respect the specification, you can use the language of your choice. To speed things up, you can generate some code using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
-For instance, you can generate [Rust](https://www.rust-lang.org) code with the following commands :
+For instance, you can generate [Rust](https://www.rust-lang.org) code with the following command :
 
 ```sh
 docker run --rm \
@@ -80,19 +80,23 @@ Once ready, your server should get your _runnables_ from a local file, another A
 
 It should be deployed to an independent location, accessible by the phone you want to use : Internet if you want access from anywhere / LAN if local access is enough for your use case.
 
-Of course, you must serve it with `HTTPS` to secure the connection between the app and your server.
+Of course, except in some cases, you must serve it with `HTTPS` to secure the connection between the app and your server.
 
-## Examples
+## Implementations
 
 ### HTTP Server Go
 
-This is the implementation, used in the `docker-compose` command above, made in Go. You can browse the code at [impl/http-server-go](./impl/http-server-go).
+This is the implementation used in the `docker-compose` command above, made in Go. You can browse the code at [impl/http-server-go](./impl/http-server-go).
 
-There are multiple service implementations available :
+If you don't want or cannot build your own server, you can use this one.
 
-- `noop` (default) : as its name indicates, it does nothing except returning empty payloads
-- `self` : it returns the container as a _runnable_, hence the usage of self. Since the container is not running as root, you should get an error when calling `reboot` or `stop`. But be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually reboot or stop the machine
-- `fileJson` : it grabs the _runnables_ from a JSON file that must respect the schema in order to be unmarshalled into an array of `Runnable` (see [servers.example.json](./data/servers.example.json))
+You can download the latest release from the [releases](https://github.com/c100k/rebootx-on-prem/releases) page or build it yourself from source.
+
+The server can run in different modes depending on your use case :
+
+- `noop` (default) : it does nothing except returning empty payloads
+- `self` : it returns the host as a _runnable_. Be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually `reboot` or `stop` the machine for real
+- `fileJson` : it reads the _runnables_ from a JSON file that must respect the schema in order to be unmarshalled into an array of `Runnable` (see [servers.example.json](./data/servers.example.json))
 
 To override the default behavior, see `docker-compose.yml` or `config.go` and update the appropriate environment variables accordingly. 
 
