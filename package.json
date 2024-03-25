@@ -18,7 +18,7 @@
         "fast-check": "^3.16.0",
         "prettier": "^3.2.5",
         "prettier-plugin-package": "^1.4.0",
-        "tsoa": "^6.1.5",
+        "tsoa": "^6.2.0",
         "typescript": "^5.4.2"
     }
 }
