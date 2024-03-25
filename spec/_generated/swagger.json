@@ -452,7 +452,7 @@
                 ]
             }
         },
-        "/runnables/reboot/{id}": {
+        "/runnables/{id}/reboot": {
             "post": {
                 "operationId": "Reboot",
                 "responses": {
@@ -533,7 +533,7 @@
                 ]
             }
         },
-        "/runnables/stop/{id}": {
+        "/runnables/{id}/stop": {
             "post": {
                 "operationId": "Stop",
                 "responses": {

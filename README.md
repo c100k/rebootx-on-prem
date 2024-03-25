@@ -53,8 +53,8 @@ You can also directly test the server with cURL:
 
 ```sh
 curl -v -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runnables
-curl -v -X POST -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runnables/reboot/self
-curl -v -X POST -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runnables/stop/self
+curl -v -X POST -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runnables/self/reboot
+curl -v -X POST -H "Authorization: <apiKey>" http://localhost:9001/cd5331ba/runnables/self/stop
 ```
 
 ## Creating your own server

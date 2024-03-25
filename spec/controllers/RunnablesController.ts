@@ -73,7 +73,7 @@ export class RunnablesController extends Controller {
      * @param id
      * @returns
      */
-    @Post('reboot/{id}')
+    @Post('{id}/reboot')
     @SuccessResponse(201)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
@@ -94,7 +94,7 @@ export class RunnablesController extends Controller {
      * @param id
      * @returns
      */
-    @Post('stop/{id}')
+    @Post('{id}/stop')
     @SuccessResponse(201)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
