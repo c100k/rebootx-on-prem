@@ -43,7 +43,7 @@
                         "type": "number",
                         "format": "double",
                         "nullable": true,
-                        "description": "Format it correctly so it's displayed correctly in the app.\nIf it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)"
+                        "description": "Format it so it's displayed correctly in the app.\nIf it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)"
                     }
                 },
                 "required": ["label", "ratio", "thresholds", "unit", "value"],
