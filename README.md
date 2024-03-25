@@ -31,13 +31,13 @@ You can play with it by loading it locally in [SwaggerUI](https://swagger.io/too
 ```sh
 # Generate swagger.json (optional since it's already present in the repository)
 docker run --rm \
--v ./spec:/spec \
+-v $(pwd)/spec:/spec \
 oven/bun run \
 /spec/generate-swagger.ts
 
 # Generate Go code with OpenAPI Generator
 docker run --rm \
--v ./:/app \
+-v $(pwd):/app \
 openapitools/openapi-generator-cli:v7.4.0 generate \
 -i /app/spec/_generated/swagger.json \
 -g go \
@@ -67,7 +67,7 @@ For instance, you can generate [Rust](https://www.rust-lang.org) code with the f
 
 ```sh
 docker run --rm \
--v ./:/app \
+-v $(pwd):/app \
 openapitools/openapi-generator-cli generate \
 -i /app/spec/_generated/swagger.json \
 -g rust \
