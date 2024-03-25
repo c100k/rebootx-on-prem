@@ -10,6 +10,10 @@ A _Runnable_ is anything that _runs_, can be _stopped_ and _rebooted_. For insta
 
 If you have already used the [RebootX](https://c100k.eu/p/rebootx) app, you are already familiar with how it works when you connect public cloud providers like Amazon Web Services (AWS), Microsoft Azure, Clever Cloud, Google Cloud (GCP), OVH or Scaleway.
 
+<p align="center">
+  <img width="460" src="./cover.png">
+</p>
+
 Why should you use this specification ?
 
 It provides the solution if you are in one of these cases :
