@@ -1,6 +1,6 @@
 {
     "name": "rebootx-on-prem",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "scripts": {
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx --cache --debug --fix && prettier --write '**/*.json'",
         "lint:ci": "eslint . --ext .js,.jsx,.ts,.tsx && prettier '**/*.json'",
