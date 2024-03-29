@@ -4,7 +4,7 @@
         "fqdn": "server01.mycompany.com",
         "id": "123",
         "ipv4": "192.168.0.26",
-        "metric": [
+        "metrics": [
             {
                 "label": "CPU",
                 "ratio": null,

@@ -17,7 +17,7 @@ type ServiceFileJson struct {
 func (service ServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
-	items, err := findItems(config)
+	items, err := findItems(config.serviceFileJsonFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (service ServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes,
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config, id)
+	item, err := findItem(config.serviceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (service ServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config, id)
+	item, err := findItem(config.serviceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +59,8 @@ func (service ServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func findItems(config *Config) ([]openapi.Runnable, *ServiceError) {
-	file, err := os.Open(*config.serviceFileJsonFilePath)
+func findItems(filePath *string) ([]openapi.Runnable, *ServiceError) {
+	file, err := os.Open(*filePath)
 	if err != nil {
 		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
 	}
@@ -81,8 +81,8 @@ func findItems(config *Config) ([]openapi.Runnable, *ServiceError) {
 	return items, nil
 }
 
-func findItem(config *Config, id string) (*openapi.Runnable, *ServiceError) {
-	items, err := findItems(config)
+func findItem(filePath *string, id string) (*openapi.Runnable, *ServiceError) {
+	items, err := findItems(filePath)
 	if err != nil {
 		return nil, err
 	}

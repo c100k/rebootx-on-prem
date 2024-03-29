@@ -3,6 +3,8 @@ package main
 import (
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuildCPUMetric(t *testing.T) {
@@ -15,10 +17,7 @@ func TestBuildCPUMetric(t *testing.T) {
 	value := *metric.Value.Get()
 
 	// Then
-	expectedValue := 1.92
-	if value != expectedValue {
-		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
-	}
+	assert.Equal(t, 1.92, value)
 }
 
 func TestBuildMemoryMetric(t *testing.T) {
@@ -33,21 +32,9 @@ func TestBuildMemoryMetric(t *testing.T) {
 	value := *metric.Value.Get()
 
 	// Then
-	expectedRatio := 0.83
-	if ratio != expectedRatio {
-		t.Fatalf("Expected ratio to be %f, actual %f", expectedRatio, ratio)
-	}
-	expectedThresholds := []float64{1288.24, 1460.01}
-	if thresholds[0] != expectedThresholds[0] {
-		t.Fatalf("Expected thresholds[0] to be %f, actual %f", expectedThresholds[0], thresholds[0])
-	}
-	if thresholds[1] != expectedThresholds[1] {
-		t.Fatalf("Expected thresholds[1] to be %f, actual %f", expectedThresholds[1], thresholds[1])
-	}
-	expectedValue := 1433.33
-	if value != expectedValue {
-		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
-	}
+	assert.Equal(t, 0.83, ratio)
+	assert.EqualValues(t, []float64{1288.24, 1460.01}, thresholds)
+	assert.Equal(t, 1433.33, value)
 }
 
 func TestBuildUptimeMetric(t *testing.T) {
@@ -60,14 +47,8 @@ func TestBuildUptimeMetric(t *testing.T) {
 	unit := *metric.Unit.Get()
 
 	// Then
-	expectedValue := 34.0
-	if value != expectedValue {
-		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
-	}
-	expectedUnit := "min"
-	if unit != expectedUnit {
-		t.Fatalf("Expected unit to be %s, actual %s", expectedUnit, unit)
-	}
+	assert.Equal(t, 34.0, value)
+	assert.Equal(t, "min", unit)
 
 	// Given
 	uptime, _ = time.ParseDuration("2h34m")
@@ -78,12 +59,6 @@ func TestBuildUptimeMetric(t *testing.T) {
 	unit = *metric.Unit.Get()
 
 	// Then
-	expectedValue = 3.00
-	if value != expectedValue {
-		t.Fatalf("Expected value to be %f, actual %f", expectedValue, value)
-	}
-	expectedUnit = "h"
-	if unit != expectedUnit {
-		t.Fatalf("Expected unit to be %s, actual %s", expectedUnit, unit)
-	}
+	assert.Equal(t, 3.00, value)
+	assert.Equal(t, "h", unit)
 }

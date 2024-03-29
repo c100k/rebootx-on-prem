@@ -1,3 +1,6 @@
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew/spew
 # github.com/felixge/httpsnoop v1.0.4
 ## explicit; go 1.13
 github.com/felixge/httpsnoop
@@ -12,6 +15,15 @@ github.com/gorilla/mux
 github.com/mackerelio/go-osstat/cpu
 github.com/mackerelio/go-osstat/memory
 github.com/mackerelio/go-osstat/uptime
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/testify v1.9.0
+## explicit; go 1.17
+github.com/stretchr/testify/assert
 # golang.org/x/sys v0.18.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3
