@@ -363,7 +363,7 @@
     "paths": {
         "/runnables": {
             "get": {
-                "operationId": "List",
+                "operationId": "ListRunnables",
                 "responses": {
                     "200": {
                         "description": "",
@@ -754,7 +754,7 @@
         },
         "/dashboards": {
             "get": {
-                "operationId": "List",
+                "operationId": "ListDashboards",
                 "responses": {
                     "200": {
                         "description": "",

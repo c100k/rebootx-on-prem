@@ -2,6 +2,7 @@ import {
     Controller,
     Example,
     Get,
+    OperationId,
     Path,
     Produces,
     Queries,
@@ -47,6 +48,7 @@ export class DashboardsController extends Controller {
      * @returns
      */
     @Get()
+    @OperationId('ListDashboards')
     @SuccessResponse(200)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })

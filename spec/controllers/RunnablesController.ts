@@ -2,6 +2,7 @@ import {
     Controller,
     Example,
     Get,
+    OperationId,
     Path,
     Post,
     Produces,
@@ -48,6 +49,7 @@ export class RunnablesController extends Controller {
      * @returns
      */
     @Get()
+    @OperationId('ListRunnables')
     @SuccessResponse(200)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
