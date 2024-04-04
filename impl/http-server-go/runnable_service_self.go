@@ -12,7 +12,7 @@ import (
 	"github.com/mackerelio/go-osstat/uptime"
 )
 
-type ServiceSelf struct {
+type RunnableServiceSelf struct {
 	config *Config
 	logger *slog.Logger
 }
@@ -26,7 +26,7 @@ const THRESHOLD_WARNING = 0.75
 const THRESHOLD_DANGER = 0.85
 const UPTIME_METRIC_LABEL = "Uptime"
 
-func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
+func (service RunnableServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
 	q := params.Q
@@ -84,7 +84,7 @@ func (service ServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*open
 	return res, nil
 }
 
-func (service ServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
@@ -100,7 +100,7 @@ func (service ServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *Se
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service ServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)

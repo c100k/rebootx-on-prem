@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func performOpOnSelf(config *Config, op ServiceOperationType) error {
+func performOpOnSelf(config *Config, op RunnableServiceOperationType) error {
 	sysCmdPkg := config.runnableServiceSelfSysCmdPkg
 
 	switch sysCmdPkg {

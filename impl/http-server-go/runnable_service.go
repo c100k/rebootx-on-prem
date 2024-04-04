@@ -2,14 +2,14 @@ package main
 
 import "openapi"
 
-type ServiceOperationType int32
+type RunnableServiceOperationType int32
 
 const (
-	REBOOT ServiceOperationType = 0
-	STOP   ServiceOperationType = 1
+	REBOOT RunnableServiceOperationType = 0
+	STOP   RunnableServiceOperationType = 1
 )
 
-type Service interface {
+type RunnableService interface {
 	list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError)
 	reboot(id string) (*openapi.RunnableOperationRes, *ServiceError)
 	stop(id string) (*openapi.RunnableOperationRes, *ServiceError)

@@ -14,20 +14,19 @@ func main() {
 	config := getConfig()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	var service Service
-	serviceImpl := config.runnableServiceImpl
-	switch serviceImpl {
+	var runnableService RunnableService
+	switch config.runnableServiceImpl {
 	case "fileJson":
-		service = ServiceFileJson{config: config, logger: logger}
+		runnableService = RunnableServiceFileJson{config: config, logger: logger}
 	case "noop":
-		service = ServiceNoop{logger: logger}
+		runnableService = RunnableServiceNoop{logger: logger}
 	case "self":
-		service = ServiceSelf{config: config, logger: logger}
+		runnableService = RunnableServiceSelf{config: config, logger: logger}
 	default:
-		panic(fmt.Sprintf("Invalid serviceImpl : %s", serviceImpl))
+		panic(fmt.Sprintf("Invalid runnableServiceImpl : %s", config.runnableServiceImpl))
 	}
 
-	logger.Info(fmt.Sprintf("Using serviceImpl : %s", serviceImpl))
+	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.runnableServiceImpl))
 
 	router := mux.NewRouter()
 
@@ -37,9 +36,9 @@ func main() {
 
 	rootPath := fmt.Sprintf("/%s/runnables", config.pathPrefix)
 
-	router.HandleFunc(rootPath, getRunnablesHandler(service)).Methods("GET")
-	router.HandleFunc(fmt.Sprintf("%s/{id}/reboot", rootPath), postRunnableRebootHandler(service)).Methods("POST")
-	router.HandleFunc(fmt.Sprintf("%s/{id}/stop", rootPath), postRunnableStopHandler(service)).Methods("POST")
+	router.HandleFunc(rootPath, getRunnablesHandler(runnableService)).Methods("GET")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/reboot", rootPath), postRunnableRebootHandler(runnableService)).Methods("POST")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/stop", rootPath), postRunnableStopHandler(runnableService)).Methods("POST")
 
 	headersCORS := handlers.AllowedHeaders([]string{AUTHORIZATION_HEADER, "Content-Type", "Origin"})
 	methodsCORS := handlers.AllowedMethods([]string{"GET", "HEAD", "OPTIONS", "POST"})
