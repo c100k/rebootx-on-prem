@@ -298,6 +298,53 @@
                 },
                 "type": "object",
                 "additionalProperties": false
+            },
+            "DashboardMetric": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Unlike `RunnableMetric`, this label can be longer to fit your needs"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Try to keep it short to have a great and more readable display (i.e. \"MB\", \"%\", \"GB/s\")"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true,
+                        "description": "Format it so it's displayed correctly in the app.\nIf it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)"
+                    }
+                },
+                "required": ["id", "label", "unit", "value"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRes_DashboardMetric_": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/DashboardMetric"
+                        },
+                        "type": "array"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                },
+                "required": ["items", "total"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListDashboardMetricsRes": {
+                "$ref": "#/components/schemas/ListRes_DashboardMetric_"
             }
         },
         "securitySchemes": {
@@ -695,7 +742,7 @@
                                                     "name": "Business"
                                                 }
                                             ],
-                                            "total": 0
+                                            "total": 2
                                         }
                                     },
                                     "An empty list": {
@@ -779,6 +826,108 @@
                         "in": "query",
                         "name": "q",
                         "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/dashboards/{id}/metrics": {
+            "get": {
+                "operationId": "ListMetrics",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListDashboardMetricsRes"
+                                },
+                                "examples": {
+                                    "A list of metrics": {
+                                        "value": {
+                                            "items": [
+                                                {
+                                                    "id": "123",
+                                                    "label": "Clients #",
+                                                    "unit": null,
+                                                    "value": 612
+                                                },
+                                                {
+                                                    "id": "456",
+                                                    "label": "Turnover",
+                                                    "unit": "€",
+                                                    "value": null
+                                                },
+                                                {
+                                                    "id": "789",
+                                                    "label": "NPS",
+                                                    "unit": null,
+                                                    "value": 95
+                                                }
+                                            ],
+                                            "total": 3
+                                        }
+                                    },
+                                    "An empty list": {
+                                        "value": {
+                                            "items": [],
+                                            "total": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "List dashboard metrics\n\nFor each metric, you can send the value or `null`. Typically, if the value is \"long\" to get, set `null` to return early from this call.\nThis will offer a better UX in the app by loading the metrics fast. The app will take care of fetching the actual value asynchronously.",
+                "summary": "List dashboard metrics",
+                "tags": ["Dashboard"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
