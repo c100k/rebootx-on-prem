@@ -241,6 +241,63 @@
                 "required": ["jobId"],
                 "type": "object",
                 "additionalProperties": false
+            },
+            "Dashboard": {
+                "description": "A collection of metrics",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "name"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRes_Dashboard_": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/Dashboard"
+                        },
+                        "type": "array"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                },
+                "required": ["items", "total"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListDashboardsRes": {
+                "$ref": "#/components/schemas/ListRes_Dashboard_"
+            },
+            "ListDashboardsQueryParams": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "minimum": 0
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "minimum": 0
+                    },
+                    "q": {
+                        "type": "string",
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields."
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {
@@ -607,6 +664,121 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/dashboards": {
+            "get": {
+                "operationId": "List",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListDashboardsRes"
+                                },
+                                "examples": {
+                                    "A list of items with their id, name, etc.": {
+                                        "value": {
+                                            "items": [
+                                                {
+                                                    "id": "123",
+                                                    "name": "Infra"
+                                                },
+                                                {
+                                                    "id": "456",
+                                                    "name": "Business"
+                                                }
+                                            ],
+                                            "total": 0
+                                        }
+                                    },
+                                    "An empty list": {
+                                        "value": {
+                                            "items": [],
+                                            "total": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "List the dashboards with their id, name, etc.",
+                "summary": "List the dashboards",
+                "tags": ["Dashboard"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields.",
+                        "in": "query",
+                        "name": "q",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
