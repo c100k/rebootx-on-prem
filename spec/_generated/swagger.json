@@ -615,6 +615,23 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "description": "Reboot a runnable",
@@ -691,6 +708,23 @@
                                     "Example 1": {
                                         "value": {
                                             "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
                                         }
                                     }
                                 }
@@ -845,7 +879,7 @@
                                     "$ref": "#/components/schemas/ListDashboardMetricsRes"
                                 },
                                 "examples": {
-                                    "A list of metrics": {
+                                    "Business metrics": {
                                         "value": {
                                             "items": [
                                                 {
@@ -913,10 +947,27 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
-                "description": "List dashboard metrics\n\nFor each metric, you can send the value or `null`. Typically, if the value is \"long\" to get, set `null` to return early from this call.\nThis will offer a better UX in the app by loading the metrics fast. The app will take care of fetching the actual value asynchronously.",
-                "summary": "List dashboard metrics",
+                "description": "List a dashboard metrics\n\nFor each metric, you can send the value or `null`. Typically, if the value is \"long\" to get, set `null` to return early from this call.\nThis will offer a better UX in the app by loading the metrics fast. The app will take care of fetching the actual value asynchronously.",
+                "summary": "List a dashboard metrics",
                 "tags": ["Dashboard"],
                 "security": [
                     {
@@ -927,6 +978,110 @@
                     {
                         "in": "path",
                         "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/dashboards/{id}/metrics/{metricId}": {
+            "get": {
+                "operationId": "GetMetric",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardMetric"
+                                },
+                                "examples": {
+                                    "A business metric": {
+                                        "value": {
+                                            "id": "456",
+                                            "label": "Turnover",
+                                            "unit": "€",
+                                            "value": 4598.95
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a dashboard metric",
+                "summary": "Get a dashboard metric",
+                "tags": ["Dashboard"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "metricId",
                         "required": true,
                         "schema": {
                             "type": "string"

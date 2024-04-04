@@ -28,6 +28,8 @@ export interface DashboardMetric {
     value: number | null;
 }
 
+export type GetDashboardMetricRes = DashboardMetric;
+
 // NOTE : Voluntarily duplicating ListRunnablesQueryParams because tsoa does not handle well another level of inheritance or union type
 // @Queries('queryParams') only support 'refObject' or 'nestedObjectLiteral' types. If you want only one query parameter, please use the '@Query' decorator.
 export interface ListDashboardsQueryParams extends ListQueryParams {

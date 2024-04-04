@@ -1,4 +1,8 @@
-import { ListDashboardMetricsRes, ListDashboardsRes } from '../model';
+import {
+    GetDashboardMetricRes,
+    ListDashboardMetricsRes,
+    ListDashboardsRes,
+} from '../model';
 
 export const DASHBOARDS: ListDashboardsRes = {
     items: [
@@ -12,6 +16,13 @@ export const DASHBOARDS: ListDashboardsRes = {
         },
     ],
     total: 2,
+};
+
+export const DASHBOARD_METRICS_FOR_BUSINESS_1: GetDashboardMetricRes = {
+    id: '456',
+    label: 'Turnover',
+    unit: '€',
+    value: 4598.95,
 };
 
 export const DASHBOARD_METRICS_FOR_BUSINESS: ListDashboardMetricsRes = {
