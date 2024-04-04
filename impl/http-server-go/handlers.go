@@ -9,7 +9,7 @@ import (
 	"openapi"
 )
 
-func getRunnablesHandler(service Service) func(w http.ResponseWriter, r *http.Request) {
+func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -38,7 +38,7 @@ func getRunnablesHandler(service Service) func(w http.ResponseWriter, r *http.Re
 	})
 }
 
-func postRunnableRebootHandler(service Service) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableRebootHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -57,7 +57,7 @@ func postRunnableRebootHandler(service Service) func(w http.ResponseWriter, r *h
 	})
 }
 
-func postRunnableStopHandler(service Service) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableStopHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 

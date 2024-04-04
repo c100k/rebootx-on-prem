@@ -5,11 +5,11 @@ import (
 	"openapi"
 )
 
-type ServiceNoop struct {
+type RunnableServiceNoop struct {
 	logger *slog.Logger
 }
 
-func (service ServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
+func (service RunnableServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	service.logger.Warn("Noop")
 
 	items := []openapi.Runnable{}
@@ -20,13 +20,13 @@ func (service ServiceNoop) list(params *openapi.ListRunnablesQueryParams) (*open
 	return res, nil
 }
 
-func (service ServiceNoop) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceNoop) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	service.logger.Warn("Noop")
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service ServiceNoop) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceNoop) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	service.logger.Warn("Noop")
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil

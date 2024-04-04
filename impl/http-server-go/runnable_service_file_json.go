@@ -9,15 +9,15 @@ import (
 	"slices"
 )
 
-type ServiceFileJson struct {
+type RunnableServiceFileJson struct {
 	config *Config
 	logger *slog.Logger
 }
 
-func (service ServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
+func (service RunnableServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
-	items, err := findItems(config.serviceFileJsonFilePath)
+	items, err := findItems(config.runnableServiceFileJsonFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -29,11 +29,11 @@ func (service ServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*
 	return res, nil
 }
 
-func (service ServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.serviceFileJsonFilePath, id)
+	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +44,11 @@ func (service ServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes,
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service ServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.serviceFileJsonFilePath, id)
+	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}

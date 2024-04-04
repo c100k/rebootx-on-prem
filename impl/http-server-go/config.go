@@ -6,88 +6,92 @@ import (
 )
 
 type Config struct {
-	apiKey                     string
-	bind                       string
-	pathPrefix                 string
-	port                       int32
-	protocol                   string
-	runnableFlavor             string
-	runnableFQDN               string
-	runnableId                 string
-	runnableIPv4               string
-	runnableNameFallback       string
-	runnableScopesGeoLabel     string
-	runnableScopesGeoValue     string
-	runnableScopesLogicalLabel string
-	runnableScopesLogicalValue string
-	runnableSSHKeyname         string
-	runnableSSHPort            int32
-	runnableSSHUsername        string
-	runnableStack              string
-	serviceImpl                string
-	serviceFileJsonFilePath    *string
-	sysCmdPkg                  string
+	apiKey                                string
+	bind                                  string
+	pathPrefix                            string
+	port                                  int32
+	protocol                              string
+	runnableServiceFileJsonFilePath       *string
+	runnableServiceImpl                   string
+	runnableServiceSelfFQDN               string
+	runnableServiceSelfFlavor             string
+	runnableServiceSelfIPv4               string
+	runnableServiceSelfId                 string
+	runnableServiceSelfNameFallback       string
+	runnableServiceSelfScopesGeoLabel     string
+	runnableServiceSelfScopesGeoValue     string
+	runnableServiceSelfScopesLogicalLabel string
+	runnableServiceSelfScopesLogicalValue string
+	runnableServiceSelfSSHKeyname         string
+	runnableServiceSelfSSHPort            int32
+	runnableServiceSelfSSHUsername        string
+	runnableServiceSelfStack              string
+	runnableServiceSelfSysCmdPkg          string
 }
 
 const ENV_VAR_PREFIX = "RBTX_"
 
 func getConfig() *Config {
 	config := Config{
-		apiKey:                     getEnvOrPanic("API_KEY"),
-		bind:                       getEnvOr("BIND", "0.0.0.0"),
-		pathPrefix:                 getEnvOrPanic("PATH_PREFIX"),
-		port:                       getEnvAsIntOr("PORT", int32(8080)),
-		protocol:                   getEnvOr("PROTOCOL", "http"),
-		runnableFlavor:             getEnvOr("RUNNABLE_FLAVOR", ""),
-		runnableFQDN:               getEnvOr("RUNNABLE_FQDN", ""),
-		runnableId:                 getEnvOr("RUNNABLE_ID", "self"),
-		runnableIPv4:               getEnvOr("RUNNABLE_IPv4", ""),
-		runnableNameFallback:       getEnvOr("RUNNABLE_NAME_FALLBACK", "default"),
-		runnableScopesGeoLabel:     getEnvOr("RUNNABLE_SCOPES_GEO_LABEL", "World"),
-		runnableScopesGeoValue:     getEnvOr("RUNNABLE_SCOPES_GEO_LABEL", "world"),
-		runnableScopesLogicalLabel: getEnvOr("RUNNABLE_SCOPES_LOGICAL_LABEL", "Project 01"),
-		runnableScopesLogicalValue: getEnvOr("RUNNABLE_SCOPES_LOGICAL_LABEL", "project-01"),
-		runnableSSHKeyname:         getEnvOr("RUNNABLE_SSH_KEYNAME", "default"),
-		runnableSSHPort:            getEnvAsIntOr("RUNNABLE_SSH_PORT", int32(22)),
-		runnableSSHUsername:        getEnvOr("RUNNABLE_SSH_USERNAME", "root"),
-		runnableStack:              getEnvOr("RUNNABLE_STACK", "nodejs"),
-		serviceImpl:                getEnvOr("SERVICE_IMPL", "noop"),
-		serviceFileJsonFilePath:    getNullableEnv("SERVICE_FILE_JSON_FILE_PATH"),
-		sysCmdPkg:                  getEnvOr("SYS_CMD_PKG", "syscall"),
+		apiKey:                                getEnvOrPanic("API_KEY"),
+		bind:                                  getEnvOr("BIND", "0.0.0.0"),
+		pathPrefix:                            getEnvOrPanic("PATH_PREFIX"),
+		port:                                  getEnvAsIntOr("PORT", int32(8080)),
+		protocol:                              getEnvOr("PROTOCOL", "http"),
+		runnableServiceFileJsonFilePath:       getNullableEnv("RUNNABLE_SERVICE_FILE_JSON_FILE_PATH"),
+		runnableServiceImpl:                   getEnvOr("RUNNABLE_SERVICE_IMPL", "noop"),
+		runnableServiceSelfFQDN:               getEnvOr("RUNNABLE_SERVICE_SELF_FQDN", ""),
+		runnableServiceSelfFlavor:             getEnvOr("RUNNABLE_SERVICE_SELF_FLAVOR", ""),
+		runnableServiceSelfIPv4:               getEnvOr("RUNNABLE_SERVICE_SELF_IPv4", ""),
+		runnableServiceSelfId:                 getEnvOr("RUNNABLE_SERVICE_SELF_ID", "self"),
+		runnableServiceSelfNameFallback:       getEnvOr("RUNNABLE_SERVICE_SELF_NAME_FALLBACK", "default"),
+		runnableServiceSelfScopesGeoLabel:     getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_LABEL", ""),
+		runnableServiceSelfScopesGeoValue:     getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_VALUE", ""),
+		runnableServiceSelfScopesLogicalLabel: getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_LABEL", ""),
+		runnableServiceSelfScopesLogicalValue: getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_VALUE", ""),
+		runnableServiceSelfSSHKeyname:         getEnvOr("RUNNABLE_SERVICE_SELF_SSH_KEYNAME", "default"),
+		runnableServiceSelfSSHPort:            getEnvAsIntOr("RUNNABLE_SERVICE_SELF_SSH_PORT", int32(22)),
+		runnableServiceSelfSSHUsername:        getEnvOr("RUNNABLE_SERVICE_SELF_SSH_USERNAME", "root"),
+		runnableServiceSelfStack:              getEnvOr("RUNNABLE_SERVICE_SELF_STACK", ""),
+		runnableServiceSelfSysCmdPkg:          getEnvOr("RUNNABLE_SERVICE_SYS_CMD_PKG", "syscall"),
 	}
 
-	assertServiceImpl(config)
-	assertServiceImplFileJson(config)
-	assertSysCmdPkg(config)
+	assertRunnableServiceImpl(config)
+	assertRunnableServiceImplFileJson(config)
+	assertRunnableSysCmdPkg(config)
 
 	return &config
 }
 
-func assertServiceImpl(config Config) {
-	if config.serviceImpl != "fileJson" && config.serviceImpl != "noop" && config.serviceImpl != "self" {
-		panic(fmt.Sprintf("Valid values for serviceImpl are : 'fileJson' and 'noop' and 'self'. Got '%s'", config.serviceImpl))
+func assertRunnableServiceImpl(config Config) {
+	val := config.runnableServiceImpl
+	if val != "fileJson" && val != "noop" && val != "self" {
+		panic(fmt.Sprintf("Valid values for serviceImpl are : 'fileJson' and 'noop' and 'self'. Got '%s'", val))
 	}
 }
 
-func assertServiceImplFileJson(config Config) {
-	if config.serviceImpl != "fileJson" {
+func assertRunnableServiceImplFileJson(config Config) {
+	if config.runnableServiceImpl != "fileJson" {
 		return
 	}
 
-	if config.serviceFileJsonFilePath == nil {
+	val := config.runnableServiceFileJsonFilePath
+
+	if val == nil {
 		panic("You must provide a json file path when serviceImpl is 'fileJson'")
 	}
 
-	path := *config.serviceFileJsonFilePath
+	path := *val
 	_, err := os.Stat(path)
 	if err != nil {
 		panic(fmt.Sprintf("The file %s does not exist", path))
 	}
 }
 
-func assertSysCmdPkg(config Config) {
-	if config.sysCmdPkg != "exec" && config.sysCmdPkg != "syscall" {
-		panic(fmt.Sprintf("Valid values for sysCmdPkg are : 'exec' and 'syscall'. Got '%s'", config.sysCmdPkg))
+func assertRunnableSysCmdPkg(config Config) {
+	val := config.runnableServiceSelfSysCmdPkg
+	if val != "exec" && val != "syscall" {
+		panic(fmt.Sprintf("Valid values for sysCmdPkg are : 'exec' and 'syscall'. Got '%s'", val))
 	}
 }
 

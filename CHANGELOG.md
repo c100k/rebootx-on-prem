@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## http-server-go/unreleased
+
+* refactor(http-server-go)!: modularize runnables => 💥 BREAKING CHANGE : You need to adjust the environment variable names if you run the server with custom ones (see `impl/http-server-go/config.go`)
+
 ## http-server-go/v0.2.1 (2024-03-29)
 
 * chore: make docker-compose env vars overridable by @c100k in https://github.com/c100k/rebootx-on-prem/pull/12
