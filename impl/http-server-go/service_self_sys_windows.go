@@ -6,7 +6,9 @@ import (
 )
 
 func performOpOnSelf(config *Config, op ServiceOperationType) error {
-	switch config.sysCmdPkg {
+	sysCmdPkg := config.runnableServiceSelfSysCmdPkg
+
+	switch sysCmdPkg {
 	case "exec":
 		var cmd *exec.Cmd
 		switch op {
@@ -17,8 +19,8 @@ func performOpOnSelf(config *Config, op ServiceOperationType) error {
 		}
 		return cmd.Run()
 	case "syscall":
-		return fmt.Errorf("sysCmdPkg not supported on this OS : %s", config.sysCmdPkg)
+		return fmt.Errorf("sysCmdPkg not supported on this OS : %s", sysCmdPkg)
 	default:
-		return fmt.Errorf("Invalid sysCmdPkg : %s", config.sysCmdPkg)
+		return fmt.Errorf("invalid sysCmdPkg : %s", sysCmdPkg)
 	}
 }

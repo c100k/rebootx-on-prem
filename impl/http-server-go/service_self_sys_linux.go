@@ -1,14 +1,15 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os/exec"
 	"syscall"
 )
 
 func performOpOnSelf(config *Config, op ServiceOperationType) error {
-	switch config.sysCmdPkg {
+	sysCmdPkg := config.runnableServiceSelfSysCmdPkg
+
+	switch sysCmdPkg {
 	case "exec":
 		var cmd *exec.Cmd
 		switch op {
@@ -28,6 +29,6 @@ func performOpOnSelf(config *Config, op ServiceOperationType) error {
 		}
 		return syscall.Reboot(cmd)
 	default:
-		return errors.New(fmt.Sprintf("Invalid sysCmdPkg : %s", config.sysCmdPkg))
+		return fmt.Errorf("invalid sysCmdPkg : %s", sysCmdPkg)
 	}
 }

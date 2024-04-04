@@ -15,7 +15,8 @@ func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	var service Service
-	switch config.serviceImpl {
+	serviceImpl := config.runnableServiceImpl
+	switch serviceImpl {
 	case "fileJson":
 		service = ServiceFileJson{config: config, logger: logger}
 	case "noop":
@@ -23,10 +24,10 @@ func main() {
 	case "self":
 		service = ServiceSelf{config: config, logger: logger}
 	default:
-		panic(fmt.Sprintf("Invalid serviceImpl : %s", config.serviceImpl))
+		panic(fmt.Sprintf("Invalid serviceImpl : %s", serviceImpl))
 	}
 
-	logger.Info(fmt.Sprintf("Using serviceImpl : %s", config.serviceImpl))
+	logger.Info(fmt.Sprintf("Using serviceImpl : %s", serviceImpl))
 
 	router := mux.NewRouter()
 

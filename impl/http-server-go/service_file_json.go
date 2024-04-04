@@ -17,7 +17,7 @@ type ServiceFileJson struct {
 func (service ServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
-	items, err := findItems(config.serviceFileJsonFilePath)
+	items, err := findItems(config.runnableServiceFileJsonFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (service ServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes,
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.serviceFileJsonFilePath, id)
+	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (service ServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.serviceFileJsonFilePath, id)
+	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
 	if err != nil {
 		return nil, err
 	}
