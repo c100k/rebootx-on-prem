@@ -6,9 +6,7 @@ import (
 )
 
 type DashboardService interface {
-	getMetric(dashboardId string, metricId string) (*openapi.DashboardMetric, *ServiceError)
 	list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *ServiceError)
-	listMetrics(dashboardId string) (*openapi.ListResDashboardMetric, *ServiceError)
 }
 
 func loadDashboardService(config *Config) *DashboardService {

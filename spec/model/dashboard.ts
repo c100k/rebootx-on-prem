@@ -5,6 +5,7 @@ import { ListQueryParams, ListRes } from '../schema';
  */
 export interface Dashboard {
     id: string;
+    metrics: DashboardMetric[] | null;
     name: string;
 }
 

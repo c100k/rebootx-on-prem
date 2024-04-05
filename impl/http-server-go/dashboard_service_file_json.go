@@ -8,10 +8,6 @@ type DashboardServiceFileJson struct {
 	config *Config
 }
 
-func (service DashboardServiceFileJson) getMetric(dashboardId string, metricId string) (*openapi.DashboardMetric, *ServiceError) {
-	return nil, nil
-}
-
 func (service DashboardServiceFileJson) list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *ServiceError) {
 	config := service.config
 
@@ -25,8 +21,4 @@ func (service DashboardServiceFileJson) list(params *openapi.ListDashboardsQuery
 	res := openapi.NewListResDashboard(items, total)
 
 	return res, nil
-}
-
-func (service DashboardServiceFileJson) listMetrics(dashboardId string) (*openapi.ListResDashboardMetric, *ServiceError) {
-	return nil, nil
 }
