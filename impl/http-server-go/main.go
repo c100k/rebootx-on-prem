@@ -14,18 +14,10 @@ func main() {
 	config := getConfig()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	var runnableService RunnableService
-	switch config.runnableServiceImpl {
-	case "fileJson":
-		runnableService = RunnableServiceFileJson{config: config, logger: logger}
-	case "noop":
-		runnableService = RunnableServiceNoop{logger: logger}
-	case "self":
-		runnableService = RunnableServiceSelf{config: config, logger: logger}
-	default:
-		panic(fmt.Sprintf("Invalid runnableServiceImpl : %s", config.runnableServiceImpl))
-	}
+	dashboardService := loadDashboardService(config)
+	runnableService := loadRunnableService(config, logger)
 
+	logger.Info(fmt.Sprintf("Using dashboardServiceImpl : %s", config.dashboardServiceImpl))
 	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.runnableServiceImpl))
 
 	router := mux.NewRouter()
@@ -34,11 +26,14 @@ func main() {
 	router.Use(headerMiddleware(config))
 	router.Use(authMiddleware(config))
 
-	rootPath := fmt.Sprintf("/%s/runnables", config.pathPrefix)
+	rootPath := fmt.Sprintf("/%s", config.pathPrefix)
+	dashboardsPath := fmt.Sprintf("%s/dashboards", rootPath)
+	runnablesPath := fmt.Sprintf("%s/runnables", rootPath)
 
-	router.HandleFunc(rootPath, getRunnablesHandler(runnableService)).Methods("GET")
-	router.HandleFunc(fmt.Sprintf("%s/{id}/reboot", rootPath), postRunnableRebootHandler(runnableService)).Methods("POST")
-	router.HandleFunc(fmt.Sprintf("%s/{id}/stop", rootPath), postRunnableStopHandler(runnableService)).Methods("POST")
+	router.HandleFunc(dashboardsPath, getDashboardsHandler(*dashboardService)).Methods("GET")
+	router.HandleFunc(runnablesPath, getRunnablesHandler(*runnableService)).Methods("GET")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/reboot", runnablesPath), postRunnableRebootHandler(*runnableService)).Methods("POST")
+	router.HandleFunc(fmt.Sprintf("%s/{id}/stop", runnablesPath), postRunnableStopHandler(*runnableService)).Methods("POST")
 
 	headersCORS := handlers.AllowedHeaders([]string{AUTHORIZATION_HEADER, "Content-Type", "Origin"})
 	methodsCORS := handlers.AllowedMethods([]string{"GET", "HEAD", "OPTIONS", "POST"})

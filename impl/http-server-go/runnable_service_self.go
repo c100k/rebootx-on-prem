@@ -175,7 +175,7 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 
 func checkThatRunnableExists(config *Config, id string) *ServiceError {
 	if id != config.runnableServiceSelfId {
-		return &ServiceError{HttpStatus: 404, Message: Err404Runnable}
+		return &ServiceError{HttpStatus: 404, Message: Err404}
 	}
 	return nil
 }
