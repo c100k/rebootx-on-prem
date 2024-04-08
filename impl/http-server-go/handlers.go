@@ -20,12 +20,12 @@ func getDashboardsHandler(service DashboardService) func(w http.ResponseWriter, 
 		if limit != nil {
 			params.SetLimit(*limit)
 		}
-		params.SetQ(query.Get("q"))
 		offsetAsString := query.Get("offset")
 		offset := parseInt(&offsetAsString)
 		if offset != nil {
 			params.SetOffset(*offset)
 		}
+		params.SetQ(query.Get("q"))
 
 		res, err := service.list(params)
 		if err != nil {
@@ -49,12 +49,12 @@ func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r 
 		if limit != nil {
 			params.SetLimit(*limit)
 		}
-		params.SetQ(query.Get("q"))
 		offsetAsString := query.Get("offset")
 		offset := parseInt(&offsetAsString)
 		if offset != nil {
 			params.SetOffset(*offset)
 		}
+		params.SetQ(query.Get("q"))
 
 		res, err := service.list(params)
 		if err != nil {
