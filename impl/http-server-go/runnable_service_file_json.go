@@ -1,12 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"io"
 	"log/slog"
 	"openapi"
-	"os"
-	"slices"
 )
 
 type RunnableServiceFileJson struct {
@@ -17,7 +13,7 @@ type RunnableServiceFileJson struct {
 func (service RunnableServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
 	config := service.config
 
-	items, err := findItems(config.runnableServiceFileJsonFilePath)
+	items, err := loadItemsFromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +29,7 @@ func (service RunnableServiceFileJson) reboot(id string) (*openapi.RunnableOpera
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
+	item, err := loadItemfromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +44,7 @@ func (service RunnableServiceFileJson) stop(id string) (*openapi.RunnableOperati
 	config := service.config
 	logger := service.logger
 
-	item, err := findItem(config.runnableServiceFileJsonFilePath, id)
+	item, err := loadItemfromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
 	if err != nil {
 		return nil, err
 	}
@@ -57,42 +53,4 @@ func (service RunnableServiceFileJson) stop(id string) (*openapi.RunnableOperati
 	logger.Info("Faking stop", "id", item.Id, "name", item.Name)
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
-}
-
-func findItems(filePath *string) ([]openapi.Runnable, *ServiceError) {
-	file, err := os.Open(*filePath)
-	if err != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
-	}
-
-	defer file.Close()
-
-	content, err := io.ReadAll(file)
-	if err != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
-	}
-
-	var items []openapi.Runnable
-	json.Unmarshal(content, &items)
-	if items == nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: "Fix your JSON file to respect the schema"}
-	}
-
-	return items, nil
-}
-
-func findItem(filePath *string, id string) (*openapi.Runnable, *ServiceError) {
-	items, err := findItems(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	// If this happens to be called lots of times and we know the file is not changed after starting the server,
-	// this can be optimized by creating a Map to search faster
-	idx := slices.IndexFunc(items, func(i openapi.Runnable) bool { return i.Id == id })
-	if idx == -1 {
-		return nil, &ServiceError{HttpStatus: 404, Message: Err404Runnable}
-	}
-
-	return &items[idx], nil
 }

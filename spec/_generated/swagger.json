@@ -241,6 +241,96 @@
                 "required": ["jobId"],
                 "type": "object",
                 "additionalProperties": false
+            },
+            "DashboardMetric": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Unlike `RunnableMetric`, this label can be longer to fit your needs"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Try to keep it short to have a great and more readable display (i.e. \"MB\", \"%\", \"GB/s\")"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true,
+                        "description": "Format it so it's displayed correctly in the app.\nIf it's a percentage, unlike ratio, put directly the actual value (i.e. 25 and not 0.25)"
+                    }
+                },
+                "required": ["id", "label", "unit", "value"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Dashboard": {
+                "description": "A collection of metrics",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "metrics": {
+                        "items": {
+                            "$ref": "#/components/schemas/DashboardMetric"
+                        },
+                        "type": "array",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "metrics", "name"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListRes_Dashboard_": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/Dashboard"
+                        },
+                        "type": "array"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                },
+                "required": ["items", "total"],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ListDashboardsRes": {
+                "$ref": "#/components/schemas/ListRes_Dashboard_"
+            },
+            "ListDashboardsQueryParams": {
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "minimum": 0
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "minimum": 0
+                    },
+                    "q": {
+                        "type": "string",
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields."
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {
@@ -259,7 +349,7 @@
     "paths": {
         "/runnables": {
             "get": {
-                "operationId": "List",
+                "operationId": "ListRunnables",
                 "responses": {
                     "200": {
                         "description": "",
@@ -511,6 +601,23 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "description": "Reboot a runnable",
@@ -592,6 +699,23 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "description": "Stop a runnable",
@@ -607,6 +731,142 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/dashboards": {
+            "get": {
+                "operationId": "ListDashboards",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListDashboardsRes"
+                                },
+                                "examples": {
+                                    "A list of items with their id, name, etc.": {
+                                        "value": {
+                                            "items": [
+                                                {
+                                                    "id": "123",
+                                                    "metrics": [],
+                                                    "name": "Infra"
+                                                },
+                                                {
+                                                    "id": "456",
+                                                    "metrics": [
+                                                        {
+                                                            "id": "123",
+                                                            "label": "Clients #",
+                                                            "unit": null,
+                                                            "value": 612
+                                                        },
+                                                        {
+                                                            "id": "456",
+                                                            "label": "Turnover",
+                                                            "unit": "€",
+                                                            "value": null
+                                                        },
+                                                        {
+                                                            "id": "789",
+                                                            "label": "NPS",
+                                                            "unit": null,
+                                                            "value": 95
+                                                        }
+                                                    ],
+                                                    "name": "Business"
+                                                }
+                                            ],
+                                            "total": 2
+                                        }
+                                    },
+                                    "An empty list": {
+                                        "value": {
+                                            "items": [],
+                                            "total": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Authentication required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Operation forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorRes"
+                                },
+                                "examples": {
+                                    "Example 1": {
+                                        "value": {
+                                            "message": "Operation forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "List the dashboards with their id, name, etc.",
+                "summary": "List the dashboards",
+                "tags": ["Dashboard"],
+                "security": [
+                    {
+                        "authorizationHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "description": "Max number of items to return in the response. Set a reasonable default value (e.g. `50`) in your implementation. Avoid returning too many items at once for client performance reasons.",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Cursor from where to start fetching when paginating. The default value should be `0`.",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "description": "Filter on one or multiple properties. It's up to you to implement the filtering that you want. It can be as simple as equality check on one specific field (e.g. `name`). It can also be a partial check (e.g. `ILIKE` pattern) on multiple fields.",
+                        "in": "query",
+                        "name": "q",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

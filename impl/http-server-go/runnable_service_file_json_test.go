@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFindItems(t *testing.T) {
+func TestLoadRunnablesFromJson(t *testing.T) {
 	// Given
 	filePath := "../../data/servers.example.json"
 
 	// When
-	items, err := findItems(&filePath)
+	items, err := loadItemsFromJson[openapi.Runnable](&filePath)
 
 	// Then
 	assert.Nil(t, err)

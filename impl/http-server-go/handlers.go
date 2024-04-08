@@ -9,6 +9,35 @@ import (
 	"openapi"
 )
 
+func getDashboardsHandler(service DashboardService) func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		encoder := json.NewEncoder(w)
+
+		params := openapi.NewListDashboardsQueryParams()
+		query := r.URL.Query()
+		limitAsString := query.Get("limit")
+		limit := parseInt(&limitAsString)
+		if limit != nil {
+			params.SetLimit(*limit)
+		}
+		offsetAsString := query.Get("offset")
+		offset := parseInt(&offsetAsString)
+		if offset != nil {
+			params.SetOffset(*offset)
+		}
+		params.SetQ(query.Get("q"))
+
+		res, err := service.list(params)
+		if err != nil {
+			w.WriteHeader(err.HttpStatus)
+			encoder.Encode(openapi.NewErrorRes(err.Error()))
+			return
+		}
+
+		encoder.Encode(res)
+	})
+}
+
 func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
@@ -20,12 +49,12 @@ func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r 
 		if limit != nil {
 			params.SetLimit(*limit)
 		}
-		params.SetQ(query.Get("q"))
 		offsetAsString := query.Get("offset")
 		offset := parseInt(&offsetAsString)
 		if offset != nil {
 			params.SetOffset(*offset)
 		}
+		params.SetQ(query.Get("q"))
 
 		res, err := service.list(params)
 		if err != nil {

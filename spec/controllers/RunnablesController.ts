@@ -2,6 +2,7 @@ import {
     Controller,
     Example,
     Get,
+    OperationId,
     Path,
     Post,
     Produces,
@@ -16,6 +17,7 @@ import {
 import {
     ERR_401,
     ERR_403,
+    ERR_404,
     RUNNABLES,
     RUNNABLE_OP_ASYNC_DESC,
     RUNNABLE_OP_ASYNC_RES,
@@ -47,6 +49,7 @@ export class RunnablesController extends Controller {
      * @returns
      */
     @Get()
+    @OperationId('ListRunnables')
     @SuccessResponse(200)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
@@ -77,6 +80,7 @@ export class RunnablesController extends Controller {
     @SuccessResponse(201)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
+    @Response<ErrorRes>(404, ERR_404, { message: ERR_404 })
     @Example<RunnableOperationRes>(
         RUNNABLE_OP_ASYNC_RES,
         RUNNABLE_OP_ASYNC_DESC,
@@ -98,6 +102,7 @@ export class RunnablesController extends Controller {
     @SuccessResponse(201)
     @Response<ErrorRes>(401, ERR_401, { message: ERR_401 })
     @Response<ErrorRes>(403, ERR_403, { message: ERR_403 })
+    @Response<ErrorRes>(404, ERR_404, { message: ERR_404 })
     @Example<RunnableOperationRes>(
         RUNNABLE_OP_ASYNC_RES,
         RUNNABLE_OP_ASYNC_DESC,

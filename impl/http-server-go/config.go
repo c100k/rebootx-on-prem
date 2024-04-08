@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 )
 
 type Config struct {
 	apiKey                                string
 	bind                                  string
+	dashboardServiceFileJsonFilePath      *string
+	dashboardServiceImpl                  string
 	pathPrefix                            string
 	port                                  int32
 	protocol                              string
@@ -35,6 +38,8 @@ func getConfig() *Config {
 	config := Config{
 		apiKey:                                getEnvOrPanic("API_KEY"),
 		bind:                                  getEnvOr("BIND", "0.0.0.0"),
+		dashboardServiceFileJsonFilePath:      getNullableEnv("DASHBOARD_SERVICE_FILE_JSON_FILE_PATH"),
+		dashboardServiceImpl:                  getEnvOr("DASHBOARD_SERVICE_IMPL", "fileJson"),
 		pathPrefix:                            getEnvOrPanic("PATH_PREFIX"),
 		port:                                  getEnvAsIntOr("PORT", int32(8080)),
 		protocol:                              getEnvOr("PROTOCOL", "http"),
@@ -56,42 +61,35 @@ func getConfig() *Config {
 		runnableServiceSelfSysCmdPkg:          getEnvOr("RUNNABLE_SERVICE_SYS_CMD_PKG", "syscall"),
 	}
 
-	assertRunnableServiceImpl(config)
-	assertRunnableServiceImplFileJson(config)
-	assertRunnableSysCmdPkg(config)
+	assertOneOf(config.dashboardServiceImpl, []string{"fileJson"})
+	assertServiceImplFileJson(config.dashboardServiceImpl, config.dashboardServiceFileJsonFilePath)
+	assertOneOf(config.dashboardServiceImpl, []string{"fileJson", "noop", "self"})
+	assertServiceImplFileJson(config.runnableServiceImpl, config.runnableServiceFileJsonFilePath)
+	assertOneOf(config.runnableServiceSelfSysCmdPkg, []string{"exec", "syscall"})
 
 	return &config
 }
 
-func assertRunnableServiceImpl(config Config) {
-	val := config.runnableServiceImpl
-	if val != "fileJson" && val != "noop" && val != "self" {
-		panic(fmt.Sprintf("Valid values for serviceImpl are : 'fileJson' and 'noop' and 'self'. Got '%s'", val))
+func assertOneOf(value string, expected []string) {
+	idx := slices.Index(expected, value)
+	if idx == -1 {
+		panic(fmt.Sprintf("Valid values are : %s. Got '%s'", expected, value))
 	}
 }
 
-func assertRunnableServiceImplFileJson(config Config) {
-	if config.runnableServiceImpl != "fileJson" {
+func assertServiceImplFileJson(serviceImpl string, filePath *string) {
+	if serviceImpl != "fileJson" {
 		return
 	}
 
-	val := config.runnableServiceFileJsonFilePath
-
-	if val == nil {
-		panic("You must provide a json file path when serviceImpl is 'fileJson'")
+	if filePath == nil {
+		panic("You must provide a json file path when using 'fileJson'")
 	}
 
-	path := *val
+	path := *filePath
 	_, err := os.Stat(path)
 	if err != nil {
 		panic(fmt.Sprintf("The file %s does not exist", path))
-	}
-}
-
-func assertRunnableSysCmdPkg(config Config) {
-	val := config.runnableServiceSelfSysCmdPkg
-	if val != "exec" && val != "syscall" {
-		panic(fmt.Sprintf("Valid values for sysCmdPkg are : 'exec' and 'syscall'. Got '%s'", val))
 	}
 }
 

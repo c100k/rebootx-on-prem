@@ -6,6 +6,8 @@ services:
       # You can override any config value present in ./impl/http-server-go/config.go
       - RBTX_API_KEY=${RBTX_API_KEY:-NkCH56YZfP9psrycDLVk}
       - RBTX_PATH_PREFIX=${RBTX_PATH_PREFIX:-cd5331ba}
+      - RBTX_DASHBOARD_SERVICE_FILE_JSON_FILE_PATH=${RBTX_DASHBOARD_SERVICE_FILE_JSON_FILE_PATH:-/data/dashboards.example.json}
+      - RBTX_DASHBOARD_SERVICE_IMPL=${RBTX_DASHBOARD_SERVICE_IMPL:-fileJson}
       - RBTX_PORT=9001
       - RBTX_RUNNABLE_SERVICE_FILE_JSON_FILE_PATH=${RBTX_RUNNABLE_SERVICE_FILE_JSON_FILE_PATH:-/data/servers.example.json}
       - RBTX_RUNNABLE_SERVICE_IMPL=${RBTX_RUNNABLE_SERVICE_IMPL:-noop}
