@@ -2,7 +2,12 @@
 
 ## http-server-go/unreleased
 
+* feat: introduce dashboards
 * refactor(http-server-go)!: modularize runnables => 💥 BREAKING CHANGE : You need to adjust the environment variable names if you run the server with custom ones (see `impl/http-server-go/config.go`)
+
+## spec/unreleased
+
+* feat: introduce dashboards
 
 ## http-server-go/v0.2.1 (2024-03-29)
 
