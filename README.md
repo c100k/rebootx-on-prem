@@ -96,9 +96,8 @@ You can download the latest release from the [releases](https://github.com/c100k
 
 The server can run in different modes depending on your use case :
 
-- `noop` (default) : it does nothing except returning empty payloads
 - `self` : it returns the host as a _runnable_. Be careful if you run this on a machine as a privileged user. It relies on [syscall](https://pkg.go.dev/syscall) and [exec](https://pkg.go.dev/os/exec) so it can actually `reboot` or `stop` the machine for real
-- `fileJson` : it reads the _runnables_ from a JSON file that must respect the schema in order to be unmarshalled into an array of `Runnable` (see [servers.example.json](./data/servers.example.json))
+- `fileJson` (default) : it reads the _runnables_ from a JSON file that must respect the schema in order to be unmarshalled into an array of `Runnable` (see [servers.example.json](./data/servers.example.json))
 
 To override the default behavior, see `docker-compose.yml` or `config.go` and update the appropriate environment variables accordingly. 
 
