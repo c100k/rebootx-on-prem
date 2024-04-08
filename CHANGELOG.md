@@ -2,6 +2,7 @@
 
 ## http-server-go/unreleased
 
+* feat(http-server-go)!: remove noop service impl => 💥 BREAKING CHANGE : You need to switch to `fileJson` as default if you explicitly set `noop`
 * feat: introduce dashboards
 * refactor(http-server-go)!: modularize runnables => 💥 BREAKING CHANGE : You need to adjust the environment variable names if you run the server with custom ones (see `impl/http-server-go/config.go`)
 

@@ -44,7 +44,7 @@ func getConfig() *Config {
 		port:                                  getEnvAsIntOr("PORT", int32(8080)),
 		protocol:                              getEnvOr("PROTOCOL", "http"),
 		runnableServiceFileJsonFilePath:       getNullableEnv("RUNNABLE_SERVICE_FILE_JSON_FILE_PATH"),
-		runnableServiceImpl:                   getEnvOr("RUNNABLE_SERVICE_IMPL", "noop"),
+		runnableServiceImpl:                   getEnvOr("RUNNABLE_SERVICE_IMPL", "fileJson"),
 		runnableServiceSelfFQDN:               getEnvOr("RUNNABLE_SERVICE_SELF_FQDN", ""),
 		runnableServiceSelfFlavor:             getEnvOr("RUNNABLE_SERVICE_SELF_FLAVOR", ""),
 		runnableServiceSelfIPv4:               getEnvOr("RUNNABLE_SERVICE_SELF_IPv4", ""),
@@ -63,7 +63,7 @@ func getConfig() *Config {
 
 	assertOneOf(config.dashboardServiceImpl, []string{"fileJson"})
 	assertServiceImplFileJson(config.dashboardServiceImpl, config.dashboardServiceFileJsonFilePath)
-	assertOneOf(config.dashboardServiceImpl, []string{"fileJson", "noop", "self"})
+	assertOneOf(config.dashboardServiceImpl, []string{"fileJson", "self"})
 	assertServiceImplFileJson(config.runnableServiceImpl, config.runnableServiceFileJsonFilePath)
 	assertOneOf(config.runnableServiceSelfSysCmdPkg, []string{"exec", "syscall"})
 

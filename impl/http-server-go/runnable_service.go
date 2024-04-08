@@ -24,8 +24,6 @@ func loadRunnableService(config *Config, logger *slog.Logger) *RunnableService {
 	switch config.runnableServiceImpl {
 	case "fileJson":
 		service = RunnableServiceFileJson{config: config, logger: logger}
-	case "noop":
-		service = RunnableServiceNoop{logger: logger}
 	case "self":
 		service = RunnableServiceSelf{config: config, logger: logger}
 	default:
