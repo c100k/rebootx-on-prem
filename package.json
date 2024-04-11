@@ -19,6 +19,6 @@
         "prettier": "^3.2.5",
         "prettier-plugin-package": "^1.4.0",
         "tsoa": "^6.2.0",
-        "typescript": "^5.4.4"
+        "typescript": "^5.4.5"
     }
 }
