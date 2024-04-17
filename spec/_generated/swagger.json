@@ -343,7 +343,7 @@
     },
     "info": {
         "title": "RebootX On-Prem Specification",
-        "version": "0.2.1",
+        "version": "0.3.0",
         "description": "Find all the details about this specification on the [GitHub repository](https://github.com/c100k/rebootx-on-prem)."
     },
     "paths": {
