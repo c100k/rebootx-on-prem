@@ -15,7 +15,6 @@
         "eslint-plugin-sonarjs": "^0.25.1",
         "eslint-plugin-typescript-sort-keys": "^3.2.0",
         "eslint-plugin-unicorn": "^52.0.0",
-        "fast-check": "^3.18.0",
         "prettier": "^3.2.5",
         "prettier-plugin-package": "^1.4.0",
         "tsoa": "^6.2.1",
