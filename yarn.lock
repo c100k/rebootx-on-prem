@@ -1581,10 +1581,10 @@ express@^4.18.3:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-fast-check@^3.17.2:
-  version "3.17.2"
-  resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-3.17.2.tgz#5b0ed6a2ff875ec58fef4ddf468b81c93af4d0bc"
-  integrity sha512-+3DPTxtxABLgmmVpYxrash3DHoq0cMa1jjLYNp3qqokKKhqVEaS4lbnaDKqWU5Dd6C2pEudPPBAEEQ9nUou9OQ==
+fast-check@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-3.18.0.tgz#025c137cb1ad3f229af7d1f913f4aa2e075fa0c5"
+  integrity sha512-/951xaT0kA40w0GXRsZXEwSTE7LugjZtSA/8vPgFkiPQ8wNp8tRvqWuNDHBgLxJYXtsK11e/7Q4ObkKW5BdTFQ==
   dependencies:
     pure-rand "^6.1.0"
 
