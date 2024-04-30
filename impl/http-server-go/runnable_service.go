@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"openapi"
+	"rebootx-on-prem/http-server-go/utils"
 )
 
 type RunnableServiceOperationType int32
@@ -14,9 +15,9 @@ const (
 )
 
 type RunnableService interface {
-	list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError)
-	reboot(id string) (*openapi.RunnableOperationRes, *ServiceError)
-	stop(id string) (*openapi.RunnableOperationRes, *ServiceError)
+	list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError)
+	reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
+	stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
 }
 
 func loadRunnableService(config *Config, logger *slog.Logger) *RunnableService {

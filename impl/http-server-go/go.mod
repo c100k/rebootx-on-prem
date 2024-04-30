@@ -1,4 +1,4 @@
-module http-server-go
+module rebootx-on-prem/http-server-go
 
 go 1.22.0
 

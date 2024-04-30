@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"openapi"
+	"rebootx-on-prem/http-server-go/utils"
 )
 
 type DashboardService interface {
-	list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *ServiceError)
+	list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError)
 }
 
 func loadDashboardService(config *Config) *DashboardService {

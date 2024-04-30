@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"rebootx-on-prem/http-server-go/utils"
 
 	"github.com/gorilla/mux"
 
@@ -16,12 +17,12 @@ func getDashboardsHandler(service DashboardService) func(w http.ResponseWriter, 
 		params := openapi.NewListDashboardsQueryParams()
 		query := r.URL.Query()
 		limitAsString := query.Get("limit")
-		limit := parseInt(&limitAsString)
+		limit := utils.ParseInt(&limitAsString)
 		if limit != nil {
 			params.SetLimit(*limit)
 		}
 		offsetAsString := query.Get("offset")
-		offset := parseInt(&offsetAsString)
+		offset := utils.ParseInt(&offsetAsString)
 		if offset != nil {
 			params.SetOffset(*offset)
 		}
@@ -45,12 +46,12 @@ func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r 
 		params := openapi.NewListRunnablesQueryParams()
 		query := r.URL.Query()
 		limitAsString := query.Get("limit")
-		limit := parseInt(&limitAsString)
+		limit := utils.ParseInt(&limitAsString)
 		if limit != nil {
 			params.SetLimit(*limit)
 		}
 		offsetAsString := query.Get("offset")
-		offset := parseInt(&offsetAsString)
+		offset := utils.ParseInt(&offsetAsString)
 		if offset != nil {
 			params.SetOffset(*offset)
 		}

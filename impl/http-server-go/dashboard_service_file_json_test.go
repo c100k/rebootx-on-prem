@@ -2,6 +2,7 @@ package main
 
 import (
 	"openapi"
+	"rebootx-on-prem/http-server-go/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ func TestLoadDashboardsFromJson(t *testing.T) {
 	filePath := "../../data/dashboards.example.json"
 
 	// When
-	items, err := loadItemsFromJson[openapi.Dashboard](&filePath)
+	items, err := utils.LoadItemsFromJson[openapi.Dashboard](&filePath)
 
 	// Then
 	assert.Nil(t, err)

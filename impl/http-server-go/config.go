@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"rebootx-on-prem/http-server-go/utils"
 	"slices"
 )
 
@@ -115,7 +116,7 @@ func getEnvOrPanic(key string) string {
 
 func getEnvAsIntOr(key string, fallback int32) int32 {
 	raw := getEnvOr(key, "")
-	v := parseInt(&raw)
+	v := utils.ParseInt(&raw)
 	if v == nil {
 		return fallback
 	}

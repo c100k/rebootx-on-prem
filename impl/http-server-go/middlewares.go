@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"rebootx-on-prem/http-server-go/utils"
 
 	"openapi"
 )
@@ -19,7 +20,7 @@ func authMiddleware(config *Config) func(http.Handler) http.Handler {
 
 			if authorization != config.apiKey {
 				w.WriteHeader(http.StatusUnauthorized)
-				json.NewEncoder(w).Encode(openapi.NewErrorRes(Err401))
+				json.NewEncoder(w).Encode(openapi.NewErrorRes(utils.Err401))
 				return
 			}
 

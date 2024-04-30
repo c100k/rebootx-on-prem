@@ -5,6 +5,7 @@ import (
 	"math"
 	"openapi"
 	"os"
+	"rebootx-on-prem/http-server-go/utils"
 	"time"
 
 	"github.com/mackerelio/go-osstat/cpu"
@@ -26,7 +27,7 @@ const THRESHOLD_WARNING = 0.75
 const THRESHOLD_DANGER = 0.85
 const UPTIME_METRIC_LABEL = "Uptime"
 
-func (service RunnableServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *ServiceError) {
+func (service RunnableServiceSelf) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
 	config := service.config
 
 	q := params.Q
@@ -84,7 +85,7 @@ func (service RunnableServiceSelf) list(params *openapi.ListRunnablesQueryParams
 	return res, nil
 }
 
-func (service RunnableServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceSelf) reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
@@ -94,13 +95,13 @@ func (service RunnableServiceSelf) reboot(id string) (*openapi.RunnableOperation
 
 	errExec := performOpOnSelf(config, REBOOT)
 	if errExec != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
+		return nil, &utils.ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service RunnableServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *ServiceError) {
+func (service RunnableServiceSelf) stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
@@ -110,20 +111,20 @@ func (service RunnableServiceSelf) stop(id string) (*openapi.RunnableOperationRe
 
 	errExec := performOpOnSelf(config, STOP)
 	if errExec != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: errExec.Error()}
+		return nil, &utils.ServiceError{HttpStatus: 500, Message: errExec.Error()}
 	}
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
 func buildCPUMetric(used uint64, total uint64) *openapi.RunnableMetric {
-	value := roundToCloser(float64(used) / float64(total) * 100)
+	value := utils.RoundToCloser(float64(used) / float64(total) * 100)
 
 	metric := openapi.NewRunnableMetric(
-		*openapi.NewNullableString(ptr(CPU_METRIC_LABEL)),
+		*openapi.NewNullableString(utils.Ptr(CPU_METRIC_LABEL)),
 		*openapi.NewNullableFloat64(nil),
 		[]float64{THRESHOLD_WARNING, THRESHOLD_DANGER},
-		*openapi.NewNullableString(ptr(CPU_METRIC_UNIT)),
+		*openapi.NewNullableString(utils.Ptr(CPU_METRIC_UNIT)),
 		*openapi.NewNullableFloat64(&value),
 	)
 
@@ -133,16 +134,16 @@ func buildCPUMetric(used uint64, total uint64) *openapi.RunnableMetric {
 func buildMemoryMetric(used uint64, total uint64) *openapi.RunnableMetric {
 	valueInBytes := float64(used)
 
-	ratio := roundToCloser(valueInBytes / float64(total))
-	warning := roundToCloser(THRESHOLD_WARNING * float64(total) / MEMORY_METRIC_UNIT_AS_BYTES)
-	danger := roundToCloser(THRESHOLD_DANGER * float64(total) / MEMORY_METRIC_UNIT_AS_BYTES)
-	value := roundToCloser(valueInBytes / MEMORY_METRIC_UNIT_AS_BYTES)
+	ratio := utils.RoundToCloser(valueInBytes / float64(total))
+	warning := utils.RoundToCloser(THRESHOLD_WARNING * float64(total) / MEMORY_METRIC_UNIT_AS_BYTES)
+	danger := utils.RoundToCloser(THRESHOLD_DANGER * float64(total) / MEMORY_METRIC_UNIT_AS_BYTES)
+	value := utils.RoundToCloser(valueInBytes / MEMORY_METRIC_UNIT_AS_BYTES)
 
 	metric := openapi.NewRunnableMetric(
-		*openapi.NewNullableString(ptr(MEMORY_METRIC_LABEL)),
+		*openapi.NewNullableString(utils.Ptr(MEMORY_METRIC_LABEL)),
 		*openapi.NewNullableFloat64(&ratio),
 		[]float64{warning, danger},
-		*openapi.NewNullableString(ptr(MEMORY_METRIC_UNIT)),
+		*openapi.NewNullableString(utils.Ptr(MEMORY_METRIC_UNIT)),
 		*openapi.NewNullableFloat64(&value),
 	)
 
@@ -163,7 +164,7 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 	value = math.Round(value)
 
 	metric := openapi.NewRunnableMetric(
-		*openapi.NewNullableString(ptr(UPTIME_METRIC_LABEL)),
+		*openapi.NewNullableString(utils.Ptr(UPTIME_METRIC_LABEL)),
 		*openapi.NewNullableFloat64(nil),
 		[]float64{},
 		*openapi.NewNullableString(&unit),
@@ -173,9 +174,9 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 	return metric
 }
 
-func checkThatRunnableExists(config *Config, id string) *ServiceError {
+func checkThatRunnableExists(config *Config, id string) *utils.ServiceError {
 	if id != config.runnableServiceSelfId {
-		return &ServiceError{HttpStatus: 404, Message: Err404}
+		return &utils.ServiceError{HttpStatus: 404, Message: utils.Err404}
 	}
 	return nil
 }
