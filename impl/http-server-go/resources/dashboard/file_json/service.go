@@ -1,4 +1,4 @@
-package resources_dashboard
+package file_json
 
 import (
 	"openapi"
@@ -6,11 +6,15 @@ import (
 	"rebootx-on-prem/http-server-go/utils"
 )
 
-type DashboardServiceFileJson struct {
+type Service struct {
 	config *config.Config
 }
 
-func (service DashboardServiceFileJson) List(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError) {
+func NewService(config *config.Config) *Service {
+	return &Service{config: config}
+}
+
+func (service Service) List(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError) {
 	config := service.config
 
 	items, err := utils.LoadItemsFromJson[openapi.Dashboard](config.DashboardServiceFileJsonFilePath)

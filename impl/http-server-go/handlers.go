@@ -12,7 +12,7 @@ import (
 	"openapi"
 )
 
-func getDashboardsHandler(service resources_dashboard.DashboardService) func(w http.ResponseWriter, r *http.Request) {
+func getDashboardsHandler(service resources_dashboard.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -41,7 +41,7 @@ func getDashboardsHandler(service resources_dashboard.DashboardService) func(w h
 	})
 }
 
-func getRunnablesHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func getRunnablesHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -70,7 +70,7 @@ func getRunnablesHandler(service resources_runnable.RunnableService) func(w http
 	})
 }
 
-func postRunnableRebootHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableRebootHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -89,7 +89,7 @@ func postRunnableRebootHandler(service resources_runnable.RunnableService) func(
 	})
 }
 
-func postRunnableStopHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableStopHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 

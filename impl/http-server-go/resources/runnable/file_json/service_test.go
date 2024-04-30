@@ -1,4 +1,4 @@
-package resources_runnable
+package file_json
 
 import (
 	"openapi"
@@ -10,7 +10,7 @@ import (
 
 func TestLoadRunnablesFromJson(t *testing.T) {
 	// Given
-	filePath := "../../../../data/servers.example.json"
+	filePath := "../../../../../data/servers.example.json"
 
 	// When
 	items, err := utils.LoadItemsFromJson[openapi.Runnable](&filePath)

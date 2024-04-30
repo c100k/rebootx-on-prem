@@ -17,11 +17,11 @@ func main() {
 	config := config.GetConfig()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	dashboardService := resources_dashboard.LoadDashboardService(config)
-	runnableService := resources_runnable.LoadRunnableService(config, logger)
+	dashboardService := resources_dashboard.LoadService(config)
+	runnableService := resources_runnable.LoadService(config, logger)
 
-	logger.Info(fmt.Sprintf("Using dashboardServiceImpl : %s", config.DashboardServiceImpl))
-	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.RunnableServiceImpl))
+	logger.Info(fmt.Sprintf("Using DashboardServiceImpl : %s", config.DashboardServiceImpl))
+	logger.Info(fmt.Sprintf("Using RunnableServiceImpl : %s", config.RunnableServiceImpl))
 
 	router := mux.NewRouter()
 

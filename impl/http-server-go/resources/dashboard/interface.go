@@ -4,20 +4,21 @@ import (
 	"fmt"
 	"openapi"
 	"rebootx-on-prem/http-server-go/config"
+	"rebootx-on-prem/http-server-go/resources/dashboard/file_json"
 	"rebootx-on-prem/http-server-go/utils"
 )
 
-type DashboardService interface {
+type Service interface {
 	List(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError)
 }
 
-func LoadDashboardService(config *config.Config) *DashboardService {
-	var service DashboardService
+func LoadService(config *config.Config) *Service {
+	var service Service
 	switch config.DashboardServiceImpl {
 	case "fileJson":
-		service = DashboardServiceFileJson{config: config}
+		service = file_json.NewService(config)
 	default:
-		panic(fmt.Sprintf("Invalid dashboardServiceImpl : %s", config.DashboardServiceImpl))
+		panic(fmt.Sprintf("Invalid DashboardServiceImpl : %s", config.DashboardServiceImpl))
 	}
 
 	return &service

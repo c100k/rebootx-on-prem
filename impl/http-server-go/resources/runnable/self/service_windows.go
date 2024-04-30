@@ -1,21 +1,22 @@
-package resources_runnable
+package self
 
 import (
 	"fmt"
 	"os/exec"
 	"rebootx-on-prem/http-server-go/config"
+	"rebootx-on-prem/http-server-go/resources/runnable/commons"
 )
 
-func performOpOnSelf(config *config.Config, op RunnableServiceOperationType) error {
+func performOpOnSelf(config *config.Config, op commons.RunnableServiceOperationType) error {
 	sysCmdPkg := config.RunnableServiceSelfSysCmdPkg
 
 	switch sysCmdPkg {
 	case "exec":
 		var cmd *exec.Cmd
 		switch op {
-		case REBOOT:
+		case commons.REBOOT:
 			cmd = exec.Command("shutdown", "/s")
-		case STOP:
+		case commons.STOP:
 			cmd = exec.Command("shutdown", "/r")
 		}
 		return cmd.Run()

@@ -1,4 +1,4 @@
-package resources_runnable
+package self
 
 import (
 	"testing"

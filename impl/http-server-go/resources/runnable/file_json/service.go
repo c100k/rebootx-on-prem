@@ -1,4 +1,4 @@
-package resources_runnable
+package file_json
 
 import (
 	"log/slog"
@@ -7,12 +7,16 @@ import (
 	"rebootx-on-prem/http-server-go/utils"
 )
 
-type RunnableServiceFileJson struct {
+type Service struct {
 	config *config.Config
 	logger *slog.Logger
 }
 
-func (service RunnableServiceFileJson) List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
+func NewService(config *config.Config, logger *slog.Logger) *Service {
+	return &Service{config: config, logger: logger}
+}
+
+func (service Service) List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
 	config := service.config
 
 	items, err := utils.LoadItemsFromJson[openapi.Runnable](config.RunnableServiceFileJsonFilePath)
@@ -27,7 +31,7 @@ func (service RunnableServiceFileJson) List(params *openapi.ListRunnablesQueryPa
 	return res, nil
 }
 
-func (service RunnableServiceFileJson) Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service Service) Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 	logger := service.logger
 
@@ -42,7 +46,7 @@ func (service RunnableServiceFileJson) Reboot(id string) (*openapi.RunnableOpera
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service RunnableServiceFileJson) Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service Service) Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 	logger := service.logger
 

@@ -1,4 +1,4 @@
-package resources_runnable
+package self
 
 import (
 	"log/slog"
@@ -6,6 +6,7 @@ import (
 	"openapi"
 	"os"
 	"rebootx-on-prem/http-server-go/config"
+	"rebootx-on-prem/http-server-go/resources/runnable/commons"
 	"rebootx-on-prem/http-server-go/utils"
 	"time"
 
@@ -14,9 +15,13 @@ import (
 	"github.com/mackerelio/go-osstat/uptime"
 )
 
-type RunnableServiceSelf struct {
+type Service struct {
 	config *config.Config
 	logger *slog.Logger
+}
+
+func NewService(config *config.Config, logger *slog.Logger) *Service {
+	return &Service{config: config, logger: logger}
 }
 
 const CPU_METRIC_LABEL = "CPU"
@@ -28,7 +33,7 @@ const THRESHOLD_WARNING = 0.75
 const THRESHOLD_DANGER = 0.85
 const UPTIME_METRIC_LABEL = "Uptime"
 
-func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
+func (service Service) List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
 	config := service.config
 
 	q := params.Q
@@ -86,7 +91,7 @@ func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams
 	return res, nil
 }
 
-func (service RunnableServiceSelf) Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service Service) Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
@@ -94,7 +99,7 @@ func (service RunnableServiceSelf) Reboot(id string) (*openapi.RunnableOperation
 		return nil, err
 	}
 
-	errExec := performOpOnSelf(config, REBOOT)
+	errExec := performOpOnSelf(config, commons.REBOOT)
 	if errExec != nil {
 		return nil, &utils.ServiceError{HTTPStatus: 500, Message: errExec.Error()}
 	}
@@ -102,7 +107,7 @@ func (service RunnableServiceSelf) Reboot(id string) (*openapi.RunnableOperation
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service RunnableServiceSelf) Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service Service) Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 
 	err := checkThatRunnableExists(config, id)
@@ -110,7 +115,7 @@ func (service RunnableServiceSelf) Stop(id string) (*openapi.RunnableOperationRe
 		return nil, err
 	}
 
-	errExec := performOpOnSelf(config, STOP)
+	errExec := performOpOnSelf(config, commons.STOP)
 	if errExec != nil {
 		return nil, &utils.ServiceError{HTTPStatus: 500, Message: errExec.Error()}
 	}
