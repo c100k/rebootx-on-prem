@@ -37,6 +37,7 @@ docker run --rm -v $(pwd):/app oven/bun run /app/spec/generate-swagger.ts
 yarn lint
 
 # Generate Go code with OpenAPI Generator
+(cd impl/http-server-go && go mod vendor)
 docker run --rm \
 -v $(pwd):/app \
 openapitools/openapi-generator-cli:v7.4.0 generate \
