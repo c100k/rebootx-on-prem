@@ -37,29 +37,29 @@ const ENV_VAR_PREFIX = "RBTX_"
 
 func GetConfig() *Config {
 	config := Config{
-		ApiKey:                                getEnvOrPanic("API_KEY"),
-		Bind:                                  getEnvOr("BIND", "0.0.0.0"),
-		DashboardServiceFileJsonFilePath:      getNullableEnv("DASHBOARD_SERVICE_FILE_JSON_FILE_PATH"),
-		DashboardServiceImpl:                  getEnvOr("DASHBOARD_SERVICE_IMPL", "fileJson"),
-		PathPrefix:                            getEnvOrPanic("PATH_PREFIX"),
-		Port:                                  getEnvAsIntOr("PORT", int32(8080)),
-		Protocol:                              getEnvOr("PROTOCOL", "http"),
-		RunnableServiceFileJsonFilePath:       getNullableEnv("RUNNABLE_SERVICE_FILE_JSON_FILE_PATH"),
-		RunnableServiceImpl:                   getEnvOr("RUNNABLE_SERVICE_IMPL", "fileJson"),
-		RunnableServiceSelfFQDN:               getEnvOr("RUNNABLE_SERVICE_SELF_FQDN", ""),
-		RunnableServiceSelfFlavor:             getEnvOr("RUNNABLE_SERVICE_SELF_FLAVOR", ""),
-		RunnableServiceSelfIPv4:               getEnvOr("RUNNABLE_SERVICE_SELF_IPv4", ""),
-		RunnableServiceSelfId:                 getEnvOr("RUNNABLE_SERVICE_SELF_ID", "self"),
-		RunnableServiceSelfNameFallback:       getEnvOr("RUNNABLE_SERVICE_SELF_NAME_FALLBACK", "default"),
-		RunnableServiceSelfScopesGeoLabel:     getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_LABEL", ""),
-		RunnableServiceSelfScopesGeoValue:     getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_VALUE", ""),
-		RunnableServiceSelfScopesLogicalLabel: getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_LABEL", ""),
-		RunnableServiceSelfScopesLogicalValue: getEnvOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_VALUE", ""),
-		RunnableServiceSelfSSHKeyname:         getEnvOr("RUNNABLE_SERVICE_SELF_SSH_KEYNAME", "default"),
-		RunnableServiceSelfSSHPort:            getEnvAsIntOr("RUNNABLE_SERVICE_SELF_SSH_PORT", int32(22)),
-		RunnableServiceSelfSSHUsername:        getEnvOr("RUNNABLE_SERVICE_SELF_SSH_USERNAME", "root"),
-		RunnableServiceSelfStack:              getEnvOr("RUNNABLE_SERVICE_SELF_STACK", ""),
-		RunnableServiceSelfSysCmdPkg:          getEnvOr("RUNNABLE_SERVICE_SYS_CMD_PKG", "syscall"),
+		ApiKey:                                envOrPanic("API_KEY"),
+		Bind:                                  envOr("BIND", "0.0.0.0"),
+		DashboardServiceFileJsonFilePath:      nullableEnv("DASHBOARD_SERVICE_FILE_JSON_FILE_PATH"),
+		DashboardServiceImpl:                  envOr("DASHBOARD_SERVICE_IMPL", "fileJson"),
+		PathPrefix:                            envOrPanic("PATH_PREFIX"),
+		Port:                                  envAsIntOr("PORT", int32(8080)),
+		Protocol:                              envOr("PROTOCOL", "http"),
+		RunnableServiceFileJsonFilePath:       nullableEnv("RUNNABLE_SERVICE_FILE_JSON_FILE_PATH"),
+		RunnableServiceImpl:                   envOr("RUNNABLE_SERVICE_IMPL", "fileJson"),
+		RunnableServiceSelfFQDN:               envOr("RUNNABLE_SERVICE_SELF_FQDN", ""),
+		RunnableServiceSelfFlavor:             envOr("RUNNABLE_SERVICE_SELF_FLAVOR", ""),
+		RunnableServiceSelfIPv4:               envOr("RUNNABLE_SERVICE_SELF_IPv4", ""),
+		RunnableServiceSelfId:                 envOr("RUNNABLE_SERVICE_SELF_ID", "self"),
+		RunnableServiceSelfNameFallback:       envOr("RUNNABLE_SERVICE_SELF_NAME_FALLBACK", "default"),
+		RunnableServiceSelfScopesGeoLabel:     envOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_LABEL", ""),
+		RunnableServiceSelfScopesGeoValue:     envOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_VALUE", ""),
+		RunnableServiceSelfScopesLogicalLabel: envOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_LABEL", ""),
+		RunnableServiceSelfScopesLogicalValue: envOr("RUNNABLE_SERVICE_SELF_SCOPES_LOGICAL_VALUE", ""),
+		RunnableServiceSelfSSHKeyname:         envOr("RUNNABLE_SERVICE_SELF_SSH_KEYNAME", "default"),
+		RunnableServiceSelfSSHPort:            envAsIntOr("RUNNABLE_SERVICE_SELF_SSH_PORT", int32(22)),
+		RunnableServiceSelfSSHUsername:        envOr("RUNNABLE_SERVICE_SELF_SSH_USERNAME", "root"),
+		RunnableServiceSelfStack:              envOr("RUNNABLE_SERVICE_SELF_STACK", ""),
+		RunnableServiceSelfSysCmdPkg:          envOr("RUNNABLE_SERVICE_SYS_CMD_PKG", "syscall"),
 	}
 
 	assertOneOf(config.DashboardServiceImpl, []string{"fileJson"})
@@ -94,28 +94,8 @@ func assertServiceImplFileJson(serviceImpl string, filePath *string) {
 	}
 }
 
-func envName(key string) string {
-	return fmt.Sprintf("%s%s", ENV_VAR_PREFIX, key)
-}
-
-func getEnvOr(key string, fallback string) string {
-	v := os.Getenv(envName(key))
-	if len(v) == 0 {
-		return fallback
-	}
-	return v
-}
-
-func getEnvOrPanic(key string) string {
-	v := getEnvOr(key, "")
-	if len(v) == 0 {
-		panic(fmt.Sprintf("You must define the '%s' env var", envName(key)))
-	}
-	return v
-}
-
-func getEnvAsIntOr(key string, fallback int32) int32 {
-	raw := getEnvOr(key, "")
+func envAsIntOr(key string, fallback int32) int32 {
+	raw := envOr(key, "")
 	v := utils.ParseInt(&raw)
 	if v == nil {
 		return fallback
@@ -123,8 +103,28 @@ func getEnvAsIntOr(key string, fallback int32) int32 {
 	return *v
 }
 
-func getNullableEnv(key string) *string {
-	v := getEnvOr(key, "")
+func envName(key string) string {
+	return fmt.Sprintf("%s%s", ENV_VAR_PREFIX, key)
+}
+
+func envOr(key string, fallback string) string {
+	v := os.Getenv(envName(key))
+	if len(v) == 0 {
+		return fallback
+	}
+	return v
+}
+
+func envOrPanic(key string) string {
+	v := envOr(key, "")
+	if len(v) == 0 {
+		panic(fmt.Sprintf("You must define the '%s' env var", envName(key)))
+	}
+	return v
+}
+
+func nullableEnv(key string) *string {
+	v := envOr(key, "")
 	if len(v) == 0 {
 		return nil
 	}

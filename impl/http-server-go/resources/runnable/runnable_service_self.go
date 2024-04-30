@@ -41,7 +41,7 @@ func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams
 
 	metrics := []openapi.RunnableMetric{}
 
-	cpuValue, cpuTotal, err := getCPUStats()
+	cpuValue, cpuTotal, err := cpuStats()
 	if err == nil {
 		metrics = append(metrics, *buildCPUMetric(*cpuValue, *cpuTotal))
 	}
@@ -58,15 +58,15 @@ func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams
 
 	items := []openapi.Runnable{
 		*openapi.NewRunnable(
-			*getNullableFrom(config.RunnableServiceSelfFlavor),
-			*getNullableFrom(config.RunnableServiceSelfFQDN),
+			*nullableFrom(config.RunnableServiceSelfFlavor),
+			*nullableFrom(config.RunnableServiceSelfFQDN),
 			config.RunnableServiceSelfId,
-			*getNullableFrom(config.RunnableServiceSelfIPv4),
+			*nullableFrom(config.RunnableServiceSelfIPv4),
 			metrics,
-			getNameFromHostname(config),
+			nameFromHostname(config),
 			*openapi.NewRunnableScopes(
-				*getScope(config.RunnableServiceSelfScopesGeoLabel, config.RunnableServiceSelfScopesGeoValue),
-				*getScope(config.RunnableServiceSelfScopesLogicalLabel, config.RunnableServiceSelfScopesLogicalValue),
+				*scope(config.RunnableServiceSelfScopesGeoLabel, config.RunnableServiceSelfScopesGeoValue),
+				*scope(config.RunnableServiceSelfScopesLogicalLabel, config.RunnableServiceSelfScopesLogicalValue),
 			),
 			*openapi.NewNullableRunnableSSH(
 				openapi.NewRunnableSSH(
@@ -75,7 +75,7 @@ func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams
 					config.RunnableServiceSelfSSHUsername,
 				),
 			),
-			*getNullableFrom(config.RunnableServiceSelfStack),
+			*nullableFrom(config.RunnableServiceSelfStack),
 			openapi.ON,
 		),
 	}
@@ -182,7 +182,7 @@ func checkThatRunnableExists(config *config.Config, id string) *utils.ServiceErr
 	return nil
 }
 
-func getCPUStats() (*uint64, *uint64, error) {
+func cpuStats() (*uint64, *uint64, error) {
 	before, err := cpu.Get()
 	if err != nil {
 		return nil, nil, err
@@ -199,7 +199,7 @@ func getCPUStats() (*uint64, *uint64, error) {
 	return &value, &total, nil
 }
 
-func getNameFromHostname(config *config.Config) string {
+func nameFromHostname(config *config.Config) string {
 	name := config.RunnableServiceSelfNameFallback
 	hostname, err := os.Hostname()
 	if err == nil && len(hostname) > 0 {
@@ -208,7 +208,7 @@ func getNameFromHostname(config *config.Config) string {
 	return name
 }
 
-func getNullableFrom(value string) *openapi.NullableString {
+func nullableFrom(value string) *openapi.NullableString {
 	if len(value) == 0 {
 		return openapi.NewNullableString(nil)
 	}
@@ -216,7 +216,7 @@ func getNullableFrom(value string) *openapi.NullableString {
 	return openapi.NewNullableString(&value)
 }
 
-func getScope(label string, value string) *openapi.NullableRunnableScope {
+func scope(label string, value string) *openapi.NullableRunnableScope {
 	if len(label) == 0 || len(value) == 0 {
 		return openapi.NewNullableRunnableScope(nil)
 	}
