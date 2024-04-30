@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"openapi"
+	"rebootx-on-prem/http-server-go/config"
 	"rebootx-on-prem/http-server-go/utils"
 )
 
@@ -20,15 +21,15 @@ type RunnableService interface {
 	stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
 }
 
-func loadRunnableService(config *Config, logger *slog.Logger) *RunnableService {
+func loadRunnableService(config *config.Config, logger *slog.Logger) *RunnableService {
 	var service RunnableService
-	switch config.runnableServiceImpl {
+	switch config.RunnableServiceImpl {
 	case "fileJson":
 		service = RunnableServiceFileJson{config: config, logger: logger}
 	case "self":
 		service = RunnableServiceSelf{config: config, logger: logger}
 	default:
-		panic(fmt.Sprintf("Invalid runnableServiceImpl : %s", config.runnableServiceImpl))
+		panic(fmt.Sprintf("Invalid runnableServiceImpl : %s", config.RunnableServiceImpl))
 	}
 
 	return &service

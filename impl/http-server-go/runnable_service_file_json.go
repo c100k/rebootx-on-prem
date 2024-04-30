@@ -3,18 +3,19 @@ package main
 import (
 	"log/slog"
 	"openapi"
+	"rebootx-on-prem/http-server-go/config"
 	"rebootx-on-prem/http-server-go/utils"
 )
 
 type RunnableServiceFileJson struct {
-	config *Config
+	config *config.Config
 	logger *slog.Logger
 }
 
 func (service RunnableServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
 	config := service.config
 
-	items, err := utils.LoadItemsFromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath)
+	items, err := utils.LoadItemsFromJson[openapi.Runnable](config.RunnableServiceFileJsonFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +31,7 @@ func (service RunnableServiceFileJson) reboot(id string) (*openapi.RunnableOpera
 	config := service.config
 	logger := service.logger
 
-	item, err := utils.LoadItemfromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
+	item, err := utils.LoadItemfromJson[openapi.Runnable](config.RunnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +46,7 @@ func (service RunnableServiceFileJson) stop(id string) (*openapi.RunnableOperati
 	config := service.config
 	logger := service.logger
 
-	item, err := utils.LoadItemfromJson[openapi.Runnable](config.runnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
+	item, err := utils.LoadItemfromJson[openapi.Runnable](config.RunnableServiceFileJsonFilePath, func(r openapi.Runnable) bool { return r.Id == id })
 	if err != nil {
 		return nil, err
 	}

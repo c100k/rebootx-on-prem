@@ -5,6 +5,7 @@ import (
 	"math"
 	"openapi"
 	"os"
+	"rebootx-on-prem/http-server-go/config"
 	"rebootx-on-prem/http-server-go/utils"
 	"time"
 
@@ -14,7 +15,7 @@ import (
 )
 
 type RunnableServiceSelf struct {
-	config *Config
+	config *config.Config
 	logger *slog.Logger
 }
 
@@ -57,24 +58,24 @@ func (service RunnableServiceSelf) list(params *openapi.ListRunnablesQueryParams
 
 	items := []openapi.Runnable{
 		*openapi.NewRunnable(
-			*getNullableFrom(config.runnableServiceSelfFlavor),
-			*getNullableFrom(config.runnableServiceSelfFQDN),
-			config.runnableServiceSelfId,
-			*getNullableFrom(config.runnableServiceSelfIPv4),
+			*getNullableFrom(config.RunnableServiceSelfFlavor),
+			*getNullableFrom(config.RunnableServiceSelfFQDN),
+			config.RunnableServiceSelfId,
+			*getNullableFrom(config.RunnableServiceSelfIPv4),
 			metrics,
 			getNameFromHostname(config),
 			*openapi.NewRunnableScopes(
-				*getScope(config.runnableServiceSelfScopesGeoLabel, config.runnableServiceSelfScopesGeoValue),
-				*getScope(config.runnableServiceSelfScopesLogicalLabel, config.runnableServiceSelfScopesLogicalValue),
+				*getScope(config.RunnableServiceSelfScopesGeoLabel, config.RunnableServiceSelfScopesGeoValue),
+				*getScope(config.RunnableServiceSelfScopesLogicalLabel, config.RunnableServiceSelfScopesLogicalValue),
 			),
 			*openapi.NewNullableRunnableSSH(
 				openapi.NewRunnableSSH(
-					*openapi.NewNullableString(&config.runnableServiceSelfSSHKeyname),
-					config.runnableServiceSelfSSHPort,
-					config.runnableServiceSelfSSHUsername,
+					*openapi.NewNullableString(&config.RunnableServiceSelfSSHKeyname),
+					config.RunnableServiceSelfSSHPort,
+					config.RunnableServiceSelfSSHUsername,
 				),
 			),
-			*getNullableFrom(config.runnableServiceSelfStack),
+			*getNullableFrom(config.RunnableServiceSelfStack),
 			openapi.ON,
 		),
 	}
@@ -174,8 +175,8 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 	return metric
 }
 
-func checkThatRunnableExists(config *Config, id string) *utils.ServiceError {
-	if id != config.runnableServiceSelfId {
+func checkThatRunnableExists(config *config.Config, id string) *utils.ServiceError {
+	if id != config.RunnableServiceSelfId {
 		return &utils.ServiceError{HttpStatus: 404, Message: utils.Err404}
 	}
 	return nil
@@ -198,8 +199,8 @@ func getCPUStats() (*uint64, *uint64, error) {
 	return &value, &total, nil
 }
 
-func getNameFromHostname(config *Config) string {
-	name := config.runnableServiceSelfNameFallback
+func getNameFromHostname(config *config.Config) string {
+	name := config.RunnableServiceSelfNameFallback
 	hostname, err := os.Hostname()
 	if err == nil && len(hostname) > 0 {
 		name = hostname

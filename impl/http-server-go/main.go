@@ -5,20 +5,21 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"rebootx-on-prem/http-server-go/config"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
 func main() {
-	config := getConfig()
+	config := config.GetConfig()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	dashboardService := loadDashboardService(config)
 	runnableService := loadRunnableService(config, logger)
 
-	logger.Info(fmt.Sprintf("Using dashboardServiceImpl : %s", config.dashboardServiceImpl))
-	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.runnableServiceImpl))
+	logger.Info(fmt.Sprintf("Using dashboardServiceImpl : %s", config.DashboardServiceImpl))
+	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.RunnableServiceImpl))
 
 	router := mux.NewRouter()
 
@@ -26,7 +27,7 @@ func main() {
 	router.Use(headerMiddleware(config))
 	router.Use(authMiddleware(config))
 
-	rootPath := fmt.Sprintf("/%s", config.pathPrefix)
+	rootPath := fmt.Sprintf("/%s", config.PathPrefix)
 	dashboardsPath := fmt.Sprintf("%s/dashboards", rootPath)
 	runnablesPath := fmt.Sprintf("%s/runnables", rootPath)
 
@@ -40,8 +41,8 @@ func main() {
 	originsCORS := handlers.AllowedOrigins([]string{"*"})
 	routerWithCORS := handlers.CORS(headersCORS, methodsCORS, originsCORS)(router)
 
-	logger.Info(fmt.Sprintf("Listening on %s://%s:%d", config.protocol, config.bind, config.port))
+	logger.Info(fmt.Sprintf("Listening on %s://%s:%d", config.Protocol, config.Bind, config.Port))
 
 	http.Handle("/", routerWithCORS)
-	http.ListenAndServe(fmt.Sprintf("%s:%d", config.bind, config.port), nil)
+	http.ListenAndServe(fmt.Sprintf("%s:%d", config.Bind, config.Port), nil)
 }

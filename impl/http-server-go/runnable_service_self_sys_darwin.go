@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"os/exec"
+	"rebootx-on-prem/http-server-go/config"
 )
 
-func performOpOnSelf(config *Config, op RunnableServiceOperationType) error {
-	sysCmdPkg := config.runnableServiceSelfSysCmdPkg
+func performOpOnSelf(config *config.Config, op RunnableServiceOperationType) error {
+	sysCmdPkg := config.RunnableServiceSelfSysCmdPkg
 
 	switch sysCmdPkg {
 	case "exec":
