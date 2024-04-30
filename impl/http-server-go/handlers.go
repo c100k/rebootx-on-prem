@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	resources_dashboard "rebootx-on-prem/http-server-go/resources/dashboard"
 	"rebootx-on-prem/http-server-go/utils"
 
 	"github.com/gorilla/mux"
@@ -10,7 +11,7 @@ import (
 	"openapi"
 )
 
-func getDashboardsHandler(service DashboardService) func(w http.ResponseWriter, r *http.Request) {
+func getDashboardsHandler(service resources_dashboard.DashboardService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -28,7 +29,7 @@ func getDashboardsHandler(service DashboardService) func(w http.ResponseWriter, 
 		}
 		params.SetQ(query.Get("q"))
 
-		res, err := service.list(params)
+		res, err := service.List(params)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))

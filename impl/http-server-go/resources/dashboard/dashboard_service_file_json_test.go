@@ -1,4 +1,4 @@
-package main
+package resources_dashboard
 
 import (
 	"openapi"

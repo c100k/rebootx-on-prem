@@ -1,4 +1,4 @@
-package main
+package resources_dashboard
 
 import (
 	"fmt"
@@ -8,10 +8,10 @@ import (
 )
 
 type DashboardService interface {
-	list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError)
+	List(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError)
 }
 
-func loadDashboardService(config *config.Config) *DashboardService {
+func LoadDashboardService(config *config.Config) *DashboardService {
 	var service DashboardService
 	switch config.DashboardServiceImpl {
 	case "fileJson":

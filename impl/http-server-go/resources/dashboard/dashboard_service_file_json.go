@@ -1,4 +1,4 @@
-package main
+package resources_dashboard
 
 import (
 	"openapi"
@@ -10,7 +10,7 @@ type DashboardServiceFileJson struct {
 	config *config.Config
 }
 
-func (service DashboardServiceFileJson) list(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError) {
+func (service DashboardServiceFileJson) List(params *openapi.ListDashboardsQueryParams) (*openapi.ListResDashboard, *utils.ServiceError) {
 	config := service.config
 
 	items, err := utils.LoadItemsFromJson[openapi.Dashboard](config.DashboardServiceFileJsonFilePath)
