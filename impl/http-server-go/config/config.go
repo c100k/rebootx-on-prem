@@ -20,7 +20,7 @@ type Config struct {
 	RunnableServiceSelfFQDN               string
 	RunnableServiceSelfFlavor             string
 	RunnableServiceSelfIPv4               string
-	RunnableServiceSelfId                 string
+	RunnableServiceSelfID                 string
 	RunnableServiceSelfNameFallback       string
 	RunnableServiceSelfScopesGeoLabel     string
 	RunnableServiceSelfScopesGeoValue     string
@@ -49,7 +49,7 @@ func GetConfig() *Config {
 		RunnableServiceSelfFQDN:               envOr("RUNNABLE_SERVICE_SELF_FQDN", ""),
 		RunnableServiceSelfFlavor:             envOr("RUNNABLE_SERVICE_SELF_FLAVOR", ""),
 		RunnableServiceSelfIPv4:               envOr("RUNNABLE_SERVICE_SELF_IPv4", ""),
-		RunnableServiceSelfId:                 envOr("RUNNABLE_SERVICE_SELF_ID", "self"),
+		RunnableServiceSelfID:                 envOr("RUNNABLE_SERVICE_SELF_ID", "self"),
 		RunnableServiceSelfNameFallback:       envOr("RUNNABLE_SERVICE_SELF_NAME_FALLBACK", "default"),
 		RunnableServiceSelfScopesGeoLabel:     envOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_LABEL", ""),
 		RunnableServiceSelfScopesGeoValue:     envOr("RUNNABLE_SERVICE_SELF_SCOPES_GEO_VALUE", ""),

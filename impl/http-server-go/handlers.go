@@ -32,7 +32,7 @@ func getDashboardsHandler(service resources_dashboard.DashboardService) func(w h
 
 		res, err := service.List(params)
 		if err != nil {
-			w.WriteHeader(err.HttpStatus)
+			w.WriteHeader(err.HTTPStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
 			return
 		}
@@ -61,7 +61,7 @@ func getRunnablesHandler(service resources_runnable.RunnableService) func(w http
 
 		res, err := service.List(params)
 		if err != nil {
-			w.WriteHeader(err.HttpStatus)
+			w.WriteHeader(err.HTTPStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
 			return
 		}
@@ -79,7 +79,7 @@ func postRunnableRebootHandler(service resources_runnable.RunnableService) func(
 
 		res, err := service.Reboot(id)
 		if err != nil {
-			w.WriteHeader(err.HttpStatus)
+			w.WriteHeader(err.HTTPStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
 			return
 		}
@@ -98,7 +98,7 @@ func postRunnableStopHandler(service resources_runnable.RunnableService) func(w 
 
 		res, err := service.Stop(id)
 		if err != nil {
-			w.WriteHeader(err.HttpStatus)
+			w.WriteHeader(err.HTTPStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
 			return
 		}

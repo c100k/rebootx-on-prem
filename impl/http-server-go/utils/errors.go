@@ -1,7 +1,7 @@
 package utils
 
 type ServiceError struct {
-	HttpStatus int
+	HTTPStatus int
 	Message    string
 }
 

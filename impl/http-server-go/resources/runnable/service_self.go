@@ -60,7 +60,7 @@ func (service RunnableServiceSelf) List(params *openapi.ListRunnablesQueryParams
 		*openapi.NewRunnable(
 			*nullableFrom(config.RunnableServiceSelfFlavor),
 			*nullableFrom(config.RunnableServiceSelfFQDN),
-			config.RunnableServiceSelfId,
+			config.RunnableServiceSelfID,
 			*nullableFrom(config.RunnableServiceSelfIPv4),
 			metrics,
 			nameFromHostname(config),
@@ -96,7 +96,7 @@ func (service RunnableServiceSelf) Reboot(id string) (*openapi.RunnableOperation
 
 	errExec := performOpOnSelf(config, REBOOT)
 	if errExec != nil {
-		return nil, &utils.ServiceError{HttpStatus: 500, Message: errExec.Error()}
+		return nil, &utils.ServiceError{HTTPStatus: 500, Message: errExec.Error()}
 	}
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
@@ -112,7 +112,7 @@ func (service RunnableServiceSelf) Stop(id string) (*openapi.RunnableOperationRe
 
 	errExec := performOpOnSelf(config, STOP)
 	if errExec != nil {
-		return nil, &utils.ServiceError{HttpStatus: 500, Message: errExec.Error()}
+		return nil, &utils.ServiceError{HTTPStatus: 500, Message: errExec.Error()}
 	}
 
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
@@ -176,8 +176,8 @@ func buildUptimeMetric(uptime time.Duration) *openapi.RunnableMetric {
 }
 
 func checkThatRunnableExists(config *config.Config, id string) *utils.ServiceError {
-	if id != config.RunnableServiceSelfId {
-		return &utils.ServiceError{HttpStatus: 404, Message: utils.Err404}
+	if id != config.RunnableServiceSelfID {
+		return &utils.ServiceError{HTTPStatus: 404, Message: utils.Err404}
 	}
 	return nil
 }

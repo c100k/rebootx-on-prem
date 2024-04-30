@@ -13,20 +13,20 @@ import (
 func LoadItemsFromJson[T any](filePath *string) ([]T, *ServiceError) {
 	file, err := os.Open(*filePath)
 	if err != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
+		return nil, &ServiceError{HTTPStatus: 500, Message: err.Error()}
 	}
 
 	defer file.Close()
 
 	content, err := io.ReadAll(file)
 	if err != nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
+		return nil, &ServiceError{HTTPStatus: 500, Message: err.Error()}
 	}
 
 	var items []T
 	json.Unmarshal(content, &items)
 	if items == nil {
-		return nil, &ServiceError{HttpStatus: 500, Message: fmt.Sprintf("Fix the file %s to respect the expected schema", *filePath)}
+		return nil, &ServiceError{HTTPStatus: 500, Message: fmt.Sprintf("Fix the file %s to respect the expected schema", *filePath)}
 	}
 
 	return items, nil
@@ -42,7 +42,7 @@ func LoadItemfromJson[T any](filePath *string, predicate func(T) bool) (*T, *Ser
 	// this can be optimized by creating a Map to search faster
 	idx := slices.IndexFunc(items, predicate)
 	if idx == -1 {
-		return nil, &ServiceError{HttpStatus: 404, Message: Err404}
+		return nil, &ServiceError{HTTPStatus: 404, Message: Err404}
 	}
 
 	return &items[idx], nil
