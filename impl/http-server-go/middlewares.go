@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"rebootx-on-prem/http-server-go/config"
+	"rebootx-on-prem/http-server-go/utils"
 
 	"openapi"
 )
@@ -12,14 +14,14 @@ import (
 const AUTHORIZATION_HEADER = "Authorization"
 const CONTENT_TYPE = "application/json"
 
-func authMiddleware(config *Config) func(http.Handler) http.Handler {
+func authMiddleware(config *config.Config) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			authorization := r.Header.Get(AUTHORIZATION_HEADER)
 
-			if authorization != config.apiKey {
+			if authorization != config.ApiKey {
 				w.WriteHeader(http.StatusUnauthorized)
-				json.NewEncoder(w).Encode(openapi.NewErrorRes(Err401))
+				json.NewEncoder(w).Encode(openapi.NewErrorRes(utils.Err401))
 				return
 			}
 
@@ -28,7 +30,7 @@ func authMiddleware(config *Config) func(http.Handler) http.Handler {
 	}
 }
 
-func headerMiddleware(_ *Config) func(http.Handler) http.Handler {
+func headerMiddleware(_ *config.Config) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", CONTENT_TYPE)
@@ -38,7 +40,7 @@ func headerMiddleware(_ *Config) func(http.Handler) http.Handler {
 	}
 }
 
-func logMiddleware(_ *Config, logger *slog.Logger) func(http.Handler) http.Handler {
+func logMiddleware(_ *config.Config, logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			logger.Info(fmt.Sprintf("%s %s", r.Method, r.URL))

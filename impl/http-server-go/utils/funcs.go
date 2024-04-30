@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func loadItemsFromJson[T any](filePath *string) ([]T, *ServiceError) {
+func LoadItemsFromJson[T any](filePath *string) ([]T, *ServiceError) {
 	file, err := os.Open(*filePath)
 	if err != nil {
 		return nil, &ServiceError{HttpStatus: 500, Message: err.Error()}
@@ -32,8 +32,8 @@ func loadItemsFromJson[T any](filePath *string) ([]T, *ServiceError) {
 	return items, nil
 }
 
-func loadItemfromJson[T any](filePath *string, predicate func(T) bool) (*T, *ServiceError) {
-	items, err := loadItemsFromJson[T](filePath)
+func LoadItemfromJson[T any](filePath *string, predicate func(T) bool) (*T, *ServiceError) {
+	items, err := LoadItemsFromJson[T](filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func loadItemfromJson[T any](filePath *string, predicate func(T) bool) (*T, *Ser
 	return &items[idx], nil
 }
 
-func parseInt(raw *string) *int32 {
+func ParseInt(raw *string) *int32 {
 	if raw == nil {
 		return nil
 	}
@@ -63,10 +63,10 @@ func parseInt(raw *string) *int32 {
 	return &asInt32
 }
 
-func ptr[T float64 | string](v T) *T {
+func Ptr[T float64 | string](v T) *T {
 	return &v
 }
 
-func roundToCloser(v float64) float64 {
+func RoundToCloser(v float64) float64 {
 	return math.Round(v*100) / 100
 }

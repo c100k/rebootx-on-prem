@@ -1,7 +1,8 @@
-package main
+package resources_runnable
 
 import (
 	"openapi"
+	"rebootx-on-prem/http-server-go/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ func TestLoadRunnablesFromJson(t *testing.T) {
 	filePath := "../../data/servers.example.json"
 
 	// When
-	items, err := loadItemsFromJson[openapi.Runnable](&filePath)
+	items, err := utils.LoadItemsFromJson[openapi.Runnable](&filePath)
 
 	// Then
 	assert.Nil(t, err)
