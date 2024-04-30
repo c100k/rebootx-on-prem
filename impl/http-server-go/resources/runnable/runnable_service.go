@@ -1,4 +1,4 @@
-package main
+package resources_runnable
 
 import (
 	"fmt"
@@ -16,12 +16,12 @@ const (
 )
 
 type RunnableService interface {
-	list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError)
-	reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
-	stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
+	List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError)
+	Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
+	Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError)
 }
 
-func loadRunnableService(config *config.Config, logger *slog.Logger) *RunnableService {
+func LoadRunnableService(config *config.Config, logger *slog.Logger) *RunnableService {
 	var service RunnableService
 	switch config.RunnableServiceImpl {
 	case "fileJson":

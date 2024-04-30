@@ -1,9 +1,10 @@
-package main
+package resources_runnable
 
 import (
 	"fmt"
 	"os/exec"
 	"rebootx-on-prem/http-server-go/config"
+	"syscall"
 )
 
 func performOpOnSelf(config *config.Config, op RunnableServiceOperationType) error {
@@ -20,7 +21,14 @@ func performOpOnSelf(config *config.Config, op RunnableServiceOperationType) err
 		}
 		return cmd.Run()
 	case "syscall":
-		return fmt.Errorf("sysCmdPkg not supported on this OS : %s", sysCmdPkg)
+		var cmd int
+		switch op {
+		case REBOOT:
+			cmd = syscall.LINUX_REBOOT_CMD_RESTART
+		case STOP:
+			cmd = syscall.LINUX_REBOOT_CMD_POWER_OFF
+		}
+		return syscall.Reboot(cmd)
 	default:
 		return fmt.Errorf("invalid sysCmdPkg : %s", sysCmdPkg)
 	}

@@ -7,6 +7,7 @@ import (
 	"os"
 	"rebootx-on-prem/http-server-go/config"
 	resources_dashboard "rebootx-on-prem/http-server-go/resources/dashboard"
+	resources_runnable "rebootx-on-prem/http-server-go/resources/runnable"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -17,7 +18,7 @@ func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	dashboardService := resources_dashboard.LoadDashboardService(config)
-	runnableService := loadRunnableService(config, logger)
+	runnableService := resources_runnable.LoadRunnableService(config, logger)
 
 	logger.Info(fmt.Sprintf("Using dashboardServiceImpl : %s", config.DashboardServiceImpl))
 	logger.Info(fmt.Sprintf("Using runnableServiceImpl : %s", config.RunnableServiceImpl))

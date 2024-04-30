@@ -1,4 +1,4 @@
-package main
+package resources_runnable
 
 import (
 	"log/slog"
@@ -12,7 +12,7 @@ type RunnableServiceFileJson struct {
 	logger *slog.Logger
 }
 
-func (service RunnableServiceFileJson) list(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
+func (service RunnableServiceFileJson) List(params *openapi.ListRunnablesQueryParams) (*openapi.ListResRunnable, *utils.ServiceError) {
 	config := service.config
 
 	items, err := utils.LoadItemsFromJson[openapi.Runnable](config.RunnableServiceFileJsonFilePath)
@@ -27,7 +27,7 @@ func (service RunnableServiceFileJson) list(params *openapi.ListRunnablesQueryPa
 	return res, nil
 }
 
-func (service RunnableServiceFileJson) reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service RunnableServiceFileJson) Reboot(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 	logger := service.logger
 
@@ -42,7 +42,7 @@ func (service RunnableServiceFileJson) reboot(id string) (*openapi.RunnableOpera
 	return openapi.NewRunnableOperationRes(*openapi.NewNullableString(nil)), nil
 }
 
-func (service RunnableServiceFileJson) stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
+func (service RunnableServiceFileJson) Stop(id string) (*openapi.RunnableOperationRes, *utils.ServiceError) {
 	config := service.config
 	logger := service.logger
 

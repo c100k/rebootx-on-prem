@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	resources_dashboard "rebootx-on-prem/http-server-go/resources/dashboard"
+	resources_runnable "rebootx-on-prem/http-server-go/resources/runnable"
 	"rebootx-on-prem/http-server-go/utils"
 
 	"github.com/gorilla/mux"
@@ -40,7 +41,7 @@ func getDashboardsHandler(service resources_dashboard.DashboardService) func(w h
 	})
 }
 
-func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func getRunnablesHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -58,7 +59,7 @@ func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r 
 		}
 		params.SetQ(query.Get("q"))
 
-		res, err := service.list(params)
+		res, err := service.List(params)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
@@ -69,14 +70,14 @@ func getRunnablesHandler(service RunnableService) func(w http.ResponseWriter, r 
 	})
 }
 
-func postRunnableRebootHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableRebootHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
 		vars := mux.Vars(r)
 		id := vars["id"]
 
-		res, err := service.reboot(id)
+		res, err := service.Reboot(id)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))
@@ -88,14 +89,14 @@ func postRunnableRebootHandler(service RunnableService) func(w http.ResponseWrit
 	})
 }
 
-func postRunnableStopHandler(service RunnableService) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableStopHandler(service resources_runnable.RunnableService) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
 		vars := mux.Vars(r)
 		id := vars["id"]
 
-		res, err := service.stop(id)
+		res, err := service.Stop(id)
 		if err != nil {
 			w.WriteHeader(err.HttpStatus)
 			encoder.Encode(openapi.NewErrorRes(err.Error()))

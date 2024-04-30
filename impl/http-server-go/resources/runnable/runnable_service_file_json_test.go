@@ -1,4 +1,4 @@
-package main
+package resources_runnable
 
 import (
 	"openapi"
