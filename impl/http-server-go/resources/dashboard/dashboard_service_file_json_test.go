@@ -10,7 +10,7 @@ import (
 
 func TestLoadDashboardsFromJson(t *testing.T) {
 	// Given
-	filePath := "../../data/dashboards.example.json"
+	filePath := "../../../../data/dashboards.example.json"
 
 	// When
 	items, err := utils.LoadItemsFromJson[openapi.Dashboard](&filePath)

@@ -46,7 +46,7 @@ jobs:
       - name: Test impl/http-server-go
         working-directory: ./impl/http-server-go
         run: |
-          go test -v
+          go test ./... -v
 
       - name: Test spec
         run: |
