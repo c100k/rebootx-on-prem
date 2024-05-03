@@ -1,4 +1,4 @@
-package resources_dashboard
+package dashboard
 
 import (
 	"fmt"

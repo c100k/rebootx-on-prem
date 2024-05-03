@@ -1,4 +1,4 @@
-package resources_runnable
+package runnable
 
 import (
 	"fmt"

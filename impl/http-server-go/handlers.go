@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	resources_dashboard "rebootx-on-prem/http-server-go/resources/dashboard"
-	resources_runnable "rebootx-on-prem/http-server-go/resources/runnable"
+	"rebootx-on-prem/http-server-go/resources/dashboard"
+	"rebootx-on-prem/http-server-go/resources/runnable"
 	"rebootx-on-prem/http-server-go/utils"
 
 	"github.com/gorilla/mux"
@@ -12,7 +12,7 @@ import (
 	"openapi"
 )
 
-func getDashboardsHandler(service resources_dashboard.Service) func(w http.ResponseWriter, r *http.Request) {
+func getDashboardsHandler(service dashboard.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -41,7 +41,7 @@ func getDashboardsHandler(service resources_dashboard.Service) func(w http.Respo
 	})
 }
 
-func getRunnablesHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
+func getRunnablesHandler(service runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -70,7 +70,7 @@ func getRunnablesHandler(service resources_runnable.Service) func(w http.Respons
 	})
 }
 
-func postRunnableRebootHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableRebootHandler(service runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
@@ -89,7 +89,7 @@ func postRunnableRebootHandler(service resources_runnable.Service) func(w http.R
 	})
 }
 
-func postRunnableStopHandler(service resources_runnable.Service) func(w http.ResponseWriter, r *http.Request) {
+func postRunnableStopHandler(service runnable.Service) func(w http.ResponseWriter, r *http.Request) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
