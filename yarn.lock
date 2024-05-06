@@ -1400,10 +1400,10 @@ eslint-plugin-prettier@^5.1.3:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.8.6"
 
-eslint-plugin-sonarjs@^0.25.1:
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-0.25.1.tgz#0619798dbc27b04fd0a8e6d0fb6adf7fa2cb5041"
-  integrity sha512-5IOKvj/GMBNqjxBdItfotfRHo7w48496GOu1hxdeXuD0mB1JBlDCViiLHETDTfA8pDAVSBimBEQoetRXYceQEw==
+eslint-plugin-sonarjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-1.0.2.tgz#e41f0a47996d7678514539e793cbdaf62b72c620"
+  integrity sha512-Mik5ZyxnUEZ+2FCxv5BitmVUXcaIy/QYi0IPrRe9JwpBABqE4EmFFseQu4g93l8g2VphPVDO2+l2aOLsA5CZgA==
 
 eslint-plugin-typescript-sort-keys@^3.2.0:
   version "3.2.0"
