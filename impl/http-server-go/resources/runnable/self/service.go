@@ -37,7 +37,7 @@ func (service Service) List(params *openapi.ListRunnablesQueryParams) (*openapi.
 	config := service.config
 
 	q := params.Q
-	if len(*q) > 0 {
+	if q != nil && len(*q) > 0 {
 		err := checkThatRunnableExists(config, *q)
 		if err != nil {
 			return openapi.NewListResRunnable([]openapi.Runnable{}, 0), nil

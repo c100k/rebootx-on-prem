@@ -1,19 +1,27 @@
 package file_json
 
 import (
+	"log/slog"
 	"openapi"
+	"os"
+	"rebootx-on-prem/http-server-go/config"
 	"rebootx-on-prem/http-server-go/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoadRunnablesFromJson(t *testing.T) {
+func TestList(t *testing.T) {
 	// Given
-	filePath := "../../../../../data/servers.example.json"
+	config := config.New()
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	config.RunnableServiceFileJsonFilePath = utils.Ptr("../../../../../data/servers.example.json")
+	service := NewService(config, logger)
+	params := openapi.NewListRunnablesQueryParamsWithDefaults()
 
 	// When
-	items, err := utils.LoadItemsFromJson[openapi.Runnable](&filePath)
+	res, err := service.List(params)
+	items := res.Items
 
 	// Then
 	assert.Nil(t, err)

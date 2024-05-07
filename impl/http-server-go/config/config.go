@@ -35,6 +35,10 @@ type Config struct {
 
 const ENV_VAR_PREFIX = "RBTX_"
 
+func New() *Config {
+	return &Config{}
+}
+
 func GetConfig() *Config {
 	config := Config{
 		ApiKey:                                envOrPanic("API_KEY"),

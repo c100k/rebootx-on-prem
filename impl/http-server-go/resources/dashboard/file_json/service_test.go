@@ -2,18 +2,23 @@ package file_json
 
 import (
 	"openapi"
+	"rebootx-on-prem/http-server-go/config"
 	"rebootx-on-prem/http-server-go/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoadDashboardsFromJson(t *testing.T) {
+func TestList(t *testing.T) {
 	// Given
-	filePath := "../../../../../data/dashboards.example.json"
+	config := config.New()
+	config.DashboardServiceFileJsonFilePath = utils.Ptr("../../../../../data/dashboards.example.json")
+	service := NewService(config)
+	params := openapi.NewListDashboardsQueryParamsWithDefaults()
 
 	// When
-	items, err := utils.LoadItemsFromJson[openapi.Dashboard](&filePath)
+	res, err := service.List(params)
+	items := res.Items
 
 	// Then
 	assert.Nil(t, err)

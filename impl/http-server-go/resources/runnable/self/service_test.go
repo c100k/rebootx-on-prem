@@ -1,11 +1,45 @@
 package self
 
 import (
+	"log/slog"
+	"openapi"
+	"os"
+	"rebootx-on-prem/http-server-go/config"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestList(t *testing.T) {
+	// Given
+	config := config.New()
+	config.RunnableServiceImpl = "self"
+	config.RunnableServiceSelfID = "self"
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	service := NewService(config, logger)
+	params := openapi.NewListRunnablesQueryParamsWithDefaults()
+
+	// When
+	res, err := service.List(params)
+	items := res.Items
+
+	// Then
+	expectedName, _ := os.Hostname()
+	assert.Nil(t, err)
+	assert.Len(t, items, 1)
+	item := items[0]
+	assert.Nil(t, item.Flavor.Get())
+	assert.Nil(t, item.Fqdn.Get())
+	assert.Equal(t, "self", item.Id)
+	assert.Len(t, item.Metrics, 3)
+	assert.Equal(t, expectedName, item.Name)
+	assert.Nil(t, item.Scopes.Geo.Get())
+	assert.Nil(t, item.Scopes.Logical.Get())
+	assert.Equal(t, int32(0), item.Ssh.Get().Port)
+	assert.Nil(t, item.Stack.Get())
+	assert.Equal(t, openapi.ON, item.Status)
+}
 
 func TestBuildCPUMetric(t *testing.T) {
 	// Given
