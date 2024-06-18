@@ -9,3 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      prod:
+        dependency-type: 'production'
+      dev:
+        dependency-type: 'development'
