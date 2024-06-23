@@ -5,7 +5,7 @@ module.exports = {
         node: true,
     },
     extends: [
-        'plugin:sonarjs/recommended',
+        'plugin:sonarjs/recommended-legacy',
     ],
     overrides: [{
         files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
