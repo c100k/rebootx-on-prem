@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## http-server-go/v0.4.0 (2024-08-05)
+
+* fix(http-server-go): handle missing q for self impl
+* refactor(http-server-go): do not use pkg names with underscores
+* docs: adjust getting started instructions
+* style(http-server-go): simplify resources pkg structure
+* style(http-server-go): uppercase http and id when applicable
+* refactor(http-server-go): make resources file names less redundant
+* refactor(http-server-go): do not prefix methods with get
+* test(http-server-go): test all subpackages
+* refactor(http-server-go): organize source with subpackages
+
+## spec/v0.4.0 (2024-08-05)
+
+* chore: convert to esm
+* refactor: prefix all node core modules imports
+
 ## http-server-go/v0.3.0 (2024-04-17)
 
 * feat(http-server-go)!: remove noop service impl => 💥 BREAKING CHANGE : You need to switch to `fileJson` as default if you explicitly set `noop`
