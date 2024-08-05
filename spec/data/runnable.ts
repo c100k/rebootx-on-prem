@@ -1,6 +1,6 @@
 import {
-    ListRunnablesRes,
-    RunnableOperationRes,
+    type ListRunnablesRes,
+    type RunnableOperationRes,
     RunnableStatus,
 } from '../model/index.js';
 

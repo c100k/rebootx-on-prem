@@ -24,14 +24,14 @@ import {
     RUNNABLE_OP_SYNC_DESC,
     RUNNABLE_OP_SYNC_RES,
 } from '../data/index.js';
-import {
+import type {
     ListRunnablesQueryParams,
     ListRunnablesRes,
     Runnable,
     RunnableOperationRes,
 } from '../model/index.js';
-import { ErrorRes } from '../schema/index.js';
-import { RunnableService } from '../services/index.js';
+import type { ErrorRes } from '../schema/index.js';
+import type { RunnableService } from '../services/index.js';
 
 @Route('runnables')
 @Produces('application/json')

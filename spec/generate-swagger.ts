@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { ExtendedSpecConfig, generateSpec } from 'tsoa';
+import { type ExtendedSpecConfig, generateSpec } from 'tsoa';
 
 const basePath = join('/app');
 

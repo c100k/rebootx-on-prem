@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## http-server-go/v0.4.1 (unreleased)
+
+## spec/v0.4.1 (unreleased)
+
+* chore: make tsconfig stricter
+
 ## http-server-go/v0.4.0 (2024-08-05)
 
 * fix(http-server-go): handle missing q for self impl

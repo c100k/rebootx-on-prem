@@ -13,12 +13,12 @@ import {
 } from 'tsoa';
 
 import { DASHBOARDS, ERR_401, ERR_403 } from '../data/index.js';
-import {
+import type {
     ListDashboardsQueryParams,
     ListDashboardsRes,
 } from '../model/index.js';
-import { ErrorRes } from '../schema/index.js';
-import { DashboardService } from '../services/index.js';
+import type { ErrorRes } from '../schema/index.js';
+import type { DashboardService } from '../services/index.js';
 
 @Route('dashboards')
 @Produces('application/json')

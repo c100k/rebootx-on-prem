@@ -6,6 +6,7 @@
         "experimentalDecorators": true,
         "lib": ["esnext"],
         "module": "NodeNext",
+        "moduleDetection": "force",
         "moduleResolution": "NodeNext",
         "noEmit": true,
         "skipLibCheck": true,
@@ -23,6 +24,7 @@
         "noImplicitReturns": true,
         "noUncheckedIndexedAccess": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true
+        "noUnusedParameters": true,
+        "verbatimModuleSyntax": true
     }
 }

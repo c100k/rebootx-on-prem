@@ -1,4 +1,4 @@
-import {
+import type {
     ListDashboardsQueryParams,
     ListDashboardsRes,
 } from '../model/index.js';
