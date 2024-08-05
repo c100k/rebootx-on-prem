@@ -23,15 +23,15 @@ import {
     RUNNABLE_OP_ASYNC_RES,
     RUNNABLE_OP_SYNC_DESC,
     RUNNABLE_OP_SYNC_RES,
-} from '../data';
+} from '../data/index.js';
 import {
     ListRunnablesQueryParams,
     ListRunnablesRes,
     Runnable,
     RunnableOperationRes,
-} from '../model';
-import { ErrorRes } from '../schema';
-import { RunnableService } from '../services';
+} from '../model/index.js';
+import { ErrorRes } from '../schema/index.js';
+import { RunnableService } from '../services/index.js';
 
 @Route('runnables')
 @Produces('application/json')

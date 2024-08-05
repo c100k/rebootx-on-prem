@@ -5,12 +5,12 @@
         "declaration": true,
         "experimentalDecorators": true,
         "lib": ["esnext"],
-        "module": "esnext",
-        "moduleResolution": "node",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "noEmit": true,
         "skipLibCheck": true,
         "sourceMap": true,
-        "target": "esnext",
+        "target": "ESNext",
 
         /* Type checking */
         "strict": true,

@@ -1,4 +1,4 @@
-import { ListDashboardsRes } from '../model';
+import { ListDashboardsRes } from '../model/index.js';
 
 export const DASHBOARDS: ListDashboardsRes = {
     items: [

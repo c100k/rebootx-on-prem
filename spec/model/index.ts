@@ -1,2 +1,2 @@
-export * from './dashboard';
-export * from './runnnable';
+export * from './dashboard.js';
+export * from './runnnable.js';

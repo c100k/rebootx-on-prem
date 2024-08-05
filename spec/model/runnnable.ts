@@ -1,4 +1,4 @@
-import { ListQueryParams, ListRes } from '../schema';
+import { ListQueryParams, ListRes } from '../schema/index.js';
 
 export interface ListRunnablesQueryParams extends ListQueryParams {
     /**

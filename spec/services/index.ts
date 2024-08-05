@@ -1,2 +1,2 @@
-export * from './DashboardService';
-export * from './RunnableService';
+export * from './DashboardService.js';
+export * from './RunnableService.js';

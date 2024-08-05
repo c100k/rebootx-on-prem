@@ -2,7 +2,7 @@ import {
     ListRunnablesRes,
     RunnableOperationRes,
     RunnableStatus,
-} from '../model';
+} from '../model/index.js';
 
 export const RUNNABLE_OP_ASYNC_DESC: string =
     'The operation has been executed asynchronously and will eventually succeed';
