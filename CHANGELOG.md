@@ -53,6 +53,6 @@ curl -v -H "Authorization: supersecret" http://localhost:8080/covfefe/runnables
 
 This is the first release of the spec containing the following endpoints : `list`, `reboot`, `stop`.
 
-To browse the spec, the fastest way is to clone this repository and execute `docker-compose up`. It will spin up [SwaggerUI](https://swagger.io/tools/swagger-ui) connected to a basic noop server.
+To browse the spec, the fastest way is to clone this repository and execute `docker compose up`. It will spin up [SwaggerUI](https://swagger.io/tools/swagger-ui) connected to a basic noop server.
 
 You can also import the `swagger.json` file in any compatible tool of your choice (e.g. [Insomnia](https://github.com/Kong/insomnia/releases), [Postman](https://github.com/postmanlabs)).

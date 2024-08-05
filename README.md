@@ -46,7 +46,7 @@ openapitools/openapi-generator-cli:v7.4.0 generate \
 -o /app/impl/http-server-go/vendor/openapi
 
 # Run Swagger UI calling the http-server-go (see below for more details)
-docker-compose up
+docker compose up
 ```
 
 You can then access http://localhost:9002 via your browser and test the endpoints. See `docker-compose.yml` to have the `apiKey`.
