@@ -4,24 +4,28 @@ module.exports = {
     env: {
         node: true,
     },
-    extends: [
-        'plugin:sonarjs/recommended-legacy',
-    ],
-    overrides: [{
-        files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
-        rules: {
-            '@typescript-eslint/explicit-function-return-type': 'error',
-            '@typescript-eslint/explicit-member-accessibility': [
-                'error',
-                {
-                    accessibility: 'explicit',
-                    overrides: {
-                        constructors: 'no-public',
-                    },
-                },
-            ],
+    extends: ['plugin:sonarjs/recommended-legacy'],
+    overrides: [
+        {
+            files: ['*.js', '*.jsx', '*.cjs', '*.mjs'],
+            rules: {},
         },
-    }],
+        {
+            files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
+            rules: {
+                '@typescript-eslint/explicit-function-return-type': 'error',
+                '@typescript-eslint/explicit-member-accessibility': [
+                    'error',
+                    {
+                        accessibility: 'explicit',
+                        overrides: {
+                            constructors: 'no-public',
+                        },
+                    },
+                ],
+            },
+        },
+    ],
     parser: '@typescript-eslint/parser',
     plugins: [
         '@typescript-eslint',

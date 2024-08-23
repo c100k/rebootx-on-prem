@@ -3,8 +3,8 @@
     "version": "0.4.0",
     "type": "module",
     "scripts": {
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --cache --debug --fix && prettier --write '**/*.json'",
-        "lint:ci": "eslint . --ext .js,.jsx,.ts,.tsx && prettier '**/*.json'",
+        "lint": "eslint . --cache --debug --fix && prettier --write '**/*.json'",
+        "lint:ci": "eslint . && prettier '**/*.json'",
         "test": "tsc"
     },
     "devDependencies": {
