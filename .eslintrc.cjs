@@ -5,7 +5,14 @@ module.exports = {
         node: true,
     },
     extends: ['plugin:sonarjs/recommended-legacy'],
+    ignorePatterns: ['_generated'],
     overrides: [
+        {
+            files: ['*.json'],
+            rules: {
+                'sort-keys': 'off',
+            },
+        },
         {
             files: ['*.js', '*.jsx', '*.cjs', '*.mjs'],
             rules: {},
