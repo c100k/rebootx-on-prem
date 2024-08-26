@@ -12,6 +12,8 @@ updates:
     ignore:
       - dependency-name: "eslint"
         versions: ["9.x"]
+      - dependency-name: "eslint-plugin-sonarjs"
+        versions: ["2.0.0", "2.0.1"]
     groups:
       dev:
         dependency-type: "development"
