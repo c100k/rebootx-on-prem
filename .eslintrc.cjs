@@ -11,6 +11,7 @@ module.exports = {
             files: ['*.json'],
             rules: {
                 'sort-keys': 'off',
+                'unicorn/numeric-separators-style': 'off',
             },
         },
         {
@@ -43,14 +44,13 @@ module.exports = {
         'unicorn',
     ],
     rules: {
-        '@typescript-eslint/explicit-function-return-type': 'error',
-        '@typescript-eslint/explicit-member-accessibility': 'error',
         // https://github.com/typescript-eslint/typescript-eslint/issues/2483#issuecomment-687095358
         '@typescript-eslint/no-shadow': 'error',
         '@typescript-eslint/no-unused-vars': [
             'error',
             {
                 argsIgnorePattern: '^_',
+                caughtErrors: 'none',
                 varsIgnorePattern: '^_',
             },
         ],
