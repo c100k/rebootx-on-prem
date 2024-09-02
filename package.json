@@ -8,12 +8,12 @@
         "test": "tsc"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^8.2.0",
-        "@typescript-eslint/parser": "^8.2.0",
+        "@typescript-eslint/eslint-plugin": "^8.3.0",
+        "@typescript-eslint/parser": "^8.3.0",
         "eslint": "^8.57.0",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-prettier": "^5.2.1",
-        "eslint-plugin-sonarjs": "^1.0.4",
+        "eslint-plugin-sonarjs": "^2.0.2",
         "eslint-plugin-typescript-sort-keys": "^3.2.0",
         "eslint-plugin-unicorn": "^55.0.0",
         "prettier": "^3.3.3",
