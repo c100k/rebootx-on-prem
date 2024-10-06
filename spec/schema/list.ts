@@ -14,7 +14,7 @@ export interface ListQueryParams {
     offset?: number;
 }
 
-export interface ListRes<T extends Object> {
+export interface ListRes<T extends {}> {
     items: T[];
 
     /**

@@ -3,11 +3,12 @@
     "version": "0.4.0",
     "type": "module",
     "scripts": {
-        "lint": "eslint . --cache --debug --fix",
-        "lint:ci": "eslint .",
+        "lint": "biome check --write .",
+        "lint:ci": "biome check",
         "test": "tsc"
     },
     "devDependencies": {
+        "@biomejs/biome": "^1.9.3",
         "@typescript-eslint/eslint-plugin": "^8.7.0",
         "@typescript-eslint/parser": "^8.7.0",
         "eslint": "^8.57.1",

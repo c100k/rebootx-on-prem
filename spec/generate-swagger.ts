@@ -22,7 +22,8 @@ const outputDirectory = join(specBasePath, '_generated');
 const specOptions: ExtendedSpecConfig = {
     basePath: '/',
     controllerPathGlobs: [controllersPath],
-    description: `Find all the details about this specification on the [GitHub repository](https://github.com/c100k/rebootx-on-prem).`,
+    description:
+        'Find all the details about this specification on the [GitHub repository](https://github.com/c100k/rebootx-on-prem).',
     entryFile: 'index.ts',
     host: 'localhost:9001/cd5331ba',
     name: 'RebootX On-Prem Specification',

@@ -54,11 +54,11 @@ module.exports = {
                 varsIgnorePattern: '^_',
             },
         ],
-        'eqeqeq': 'error',
+        eqeqeq: 'error',
         'import/order': [
             'error',
             {
-                'alphabetize': { order: 'asc' },
+                alphabetize: { order: 'asc' },
                 'newlines-between': 'always',
             },
         ],
@@ -69,7 +69,7 @@ module.exports = {
             { blankLine: 'always', next: 'return', prev: '*' },
         ],
         'prettier/prettier': 'error',
-        'semi': 'off', // Otherwise it conflicts with prettier
+        semi: 'off', // Otherwise it conflicts with prettier
         'sort-imports': ['error', { ignoreDeclarationSort: true }],
         'sort-keys': 'error',
         'typescript-sort-keys/interface': 'error',
