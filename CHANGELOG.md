@@ -4,6 +4,10 @@
 
 ## spec/v0.4.1 (unreleased)
 
+* chore: replace eslint/prettier by biome
+* chore: upgrade to node 22
+* chore: simplify linting
+* style: centralize eslint config
 * chore: make tsconfig stricter
 
 ## http-server-go/v0.4.0 (2024-08-05)
