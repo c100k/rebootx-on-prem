@@ -9,11 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      - dependency-name: "eslint"
-        versions: ["9.x"]
-      - dependency-name: "eslint-plugin-sonarjs"
-        versions: ["2.0.0", "2.0.1", "2.0.2", "2.0.3"]
     groups:
       dev:
         dependency-type: "development"
