@@ -20,8 +20,5 @@
                 "noConsole": "error"
             }
         }
-    },
-    "organizeImports": {
-        "enabled": true
     }
 }
