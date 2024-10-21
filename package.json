@@ -8,8 +8,8 @@
         "test": "tsc"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.9.3",
-        "tsoa": "^6.4.0",
+        "@biomejs/biome": "^1.9.4",
+        "tsoa": "^6.5.1",
         "typescript": "^5.6.3"
     }
 }
