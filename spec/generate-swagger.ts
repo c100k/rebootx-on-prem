@@ -6,8 +6,7 @@ import { type ExtendedSpecConfig, generateSpec } from 'tsoa';
 const basePath = join('/app');
 
 const pkgJsonPath = join(basePath, 'package.json');
-const pkgJsonBuff = await readFile(pkgJsonPath);
-const pkgJson = pkgJsonBuff.toString();
+const pkgJson = await readFile(pkgJsonPath, 'utf-8');
 const { version }: { version: string } = JSON.parse(pkgJson);
 
 const specBasePath = join(basePath, 'spec');
