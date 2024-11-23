@@ -1,4 +1,4 @@
-import type { ListQueryParams, ListRes } from '../schema/index.js';
+import type { ListQueryParams, ListRes } from '../schema/list.js';
 
 /**
  * A collection of metrics
