@@ -1,7 +1,7 @@
 import type {
     ListDashboardsQueryParams,
     ListDashboardsRes,
-} from '../model/index.js';
+} from '../model/dashboard.js';
 
 export interface DashboardService {
     list(params: ListDashboardsQueryParams): Promise<ListDashboardsRes>;

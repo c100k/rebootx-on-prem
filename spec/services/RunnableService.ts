@@ -3,7 +3,7 @@ import type {
     ListRunnablesRes,
     Runnable,
     RunnableOperationRes,
-} from '../model/index.js';
+} from '../model/runnable.js';
 
 export interface RunnableService {
     list(params: ListRunnablesQueryParams): Promise<ListRunnablesRes>;

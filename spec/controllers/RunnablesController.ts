@@ -14,24 +14,22 @@ import {
     Tags,
 } from 'tsoa';
 
+import { ERR_401, ERR_403, ERR_404 } from '../data/error.js';
 import {
-    ERR_401,
-    ERR_403,
-    ERR_404,
     RUNNABLES,
     RUNNABLE_OP_ASYNC_DESC,
     RUNNABLE_OP_ASYNC_RES,
     RUNNABLE_OP_SYNC_DESC,
     RUNNABLE_OP_SYNC_RES,
-} from '../data/index.js';
+} from '../data/runnable.js';
 import type {
     ListRunnablesQueryParams,
     ListRunnablesRes,
     Runnable,
     RunnableOperationRes,
-} from '../model/index.js';
-import type { ErrorRes } from '../schema/index.js';
-import type { RunnableService } from '../services/index.js';
+} from '../model/runnable.js';
+import type { ErrorRes } from '../schema/error.js';
+import type { RunnableService } from '../services/RunnableService.js';
 
 @Route('runnables')
 @Produces('application/json')

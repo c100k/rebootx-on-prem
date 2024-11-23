@@ -4,7 +4,8 @@
 
 ## spec/v0.4.1 (unreleased)
 
-* style: set noConsole as error
+* refactor: remove barrel files
+* refactor: simplify read version from package.json
 * chore: replace eslint/prettier by biome
 * chore: upgrade to node 22
 * chore: simplify linting
