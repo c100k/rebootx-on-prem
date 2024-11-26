@@ -6,7 +6,6 @@
         "experimentalDecorators": true,
         "lib": ["esnext"],
         "module": "NodeNext",
-        "moduleDetection": "force",
         "moduleResolution": "NodeNext",
         "noEmit": true,
         "skipLibCheck": true,
