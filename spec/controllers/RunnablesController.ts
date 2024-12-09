@@ -44,7 +44,7 @@ export class RunnablesController extends Controller {
      * List the runnables with their name, status, etc.
      * @summary List the runnables
      * @param queryParams
-     * @returns
+     * @returns The list of runnables
      */
     @Get()
     @OperationId('ListRunnables')
@@ -72,7 +72,7 @@ export class RunnablesController extends Controller {
      * Reboot a runnable
      * @summary Reboot a runnable
      * @param id
-     * @returns
+     * @returns The result of the operation
      */
     @Post('{id}/reboot')
     @SuccessResponse(201)
@@ -94,7 +94,7 @@ export class RunnablesController extends Controller {
      * Stop a runnable
      * @summary Stop a runnable
      * @param id
-     * @returns
+     * @returns The result of the operation
      */
     @Post('{id}/stop')
     @SuccessResponse(201)

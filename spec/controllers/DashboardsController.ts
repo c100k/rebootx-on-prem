@@ -34,7 +34,7 @@ export class DashboardsController extends Controller {
      * List the dashboards with their id, name, etc.
      * @summary List the dashboards
      * @param queryParams
-     * @returns
+     * @returns The list of dashboards
      */
     @Get()
     @OperationId('ListDashboards')

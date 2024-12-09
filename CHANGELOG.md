@@ -4,6 +4,7 @@
 
 ## spec/v0.4.1 (unreleased)
 
+* docs: add missing label to `@returns` in controllers
 * chore: expose types in esm
 * refactor: remove barrel files
 * refactor: simplify read version from package.json
