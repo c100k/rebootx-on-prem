@@ -1,6 +1,8 @@
 {
     "name": "rebootx-on-prem",
+    "description": "RebootX On-Prem is an open source specification for defining a custom server in order to manage on-premise runnables and dashboards in the RebootX app.",
     "version": "0.4.0",
+    "license": "Apache-2.0",
     "type": "module",
     "exports": {
         ".": {
