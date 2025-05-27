@@ -46,7 +46,6 @@ jobs:
 
       - name: Lint
         run: |
-          ls -la node_modules/@biomejs
           npm run lint:ci
 
       - name: Test impl/http-server-go
