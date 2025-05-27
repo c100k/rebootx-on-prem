@@ -6,14 +6,13 @@
 
 - [Docker](https://www.docker.com)
 - [Node](https://github.com/nvm-sh/nvm)
-- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install)
 - [Go](https://go.dev)
 
 ### Init
 
 ```sh
 git clone git@github.com:c100k/rebootx-on-prem.git
-yarn install
+npm install
 ```
 
 ## Commit messages
