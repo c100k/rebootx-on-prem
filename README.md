@@ -34,7 +34,7 @@ You can play with it by loading it locally in [SwaggerUI](https://swagger.io/too
 ```sh
 # Generate swagger.json (optional since it's already present in the repository)
 docker run --rm -v $(pwd):/app oven/bun run /app/spec/generate-swagger.ts
-npm run lint
+pnpm lint
 
 # Generate Go code with OpenAPI Generator
 (cd impl/http-server-go && go mod vendor)

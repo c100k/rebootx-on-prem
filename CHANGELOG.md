@@ -1,9 +1,12 @@
 # CHANGELOG
 
-## http-server-go/v0.4.1 (unreleased)
+## http-server-go/v0.5.0 (unreleased)
 
-## spec/v0.4.1 (unreleased)
+## spec/v0.5.0 (unreleased)
 
+* chore: switch from npm to pnpm
+* chore: switch from yarn to npm
+* chore: bump node to 23
 * docs: add missing label to `@returns` in controllers
 * chore: expose types in esm
 * refactor: remove barrel files

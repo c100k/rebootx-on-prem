@@ -6,13 +6,14 @@
 
 - [Docker](https://www.docker.com)
 - [Node](https://github.com/nvm-sh/nvm)
+- [pnpm](https://pnpm.io)
 - [Go](https://go.dev)
 
 ### Init
 
 ```sh
 git clone git@github.com:c100k/rebootx-on-prem.git
-npm install
+pnpm install
 ```
 
 ## Commit messages

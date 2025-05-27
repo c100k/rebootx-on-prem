@@ -12,20 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 23
-
-      # https://github.com/actions/cache/blob/main/examples.md#node---npm
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        shell: bash
-        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-
-      - uses: actions/cache@v4
-        id: npm-cache
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'pnpm'
 
       # https://github.com/actions/cache/blob/main/examples.md#linux-1
       - uses: actions/cache@v4
@@ -39,14 +26,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          pnpm install
           (cd impl/http-server-go && go mod vendor)
           wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
           java -jar openapi-generator-cli.jar generate -i ./spec/_generated/swagger.json -g go -o ./impl/http-server-go/vendor/openapi
 
       - name: Lint
         run: |
-          npm run lint:ci
+          pnpm lint:ci
 
       - name: Test impl/http-server-go
         working-directory: ./impl/http-server-go
@@ -55,4 +42,4 @@ jobs:
 
       - name: Test spec
         run: |
-          npm test
+          pnpm test

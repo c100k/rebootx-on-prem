@@ -10,7 +10,7 @@
         }
     },
     "scripts": {
-        "build": "rm -Rf dist && npm run build:esm",
+        "build": "rm -Rf dist && pnpm build:esm",
         "build:esm": "tsc --project tsconfig.build.json -outDir ./dist/esm",
         "lint": "biome check --write .",
         "lint:ci": "biome check",
