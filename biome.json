@@ -1,7 +1,28 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": {
+                    "level": "on",
+                    "options": {
+                        "groups": [
+                            [":NODE:"],
+                            ":BLANK_LINE:",
+                            [":PACKAGE:"],
+                            ":BLANK_LINE:",
+                            [":PATH:"]
+                        ]
+                    }
+                },
+                "useSortedAttributes": "on",
+                "useSortedKeys": "on"
+            }
+        }
+    },
     "files": {
-        "ignore": ["dist/*"]
+        "ignoreUnknown": true,
+        "includes": ["**", "!**/dist/*", "!**/_generated/*", "!package.json"]
     },
     "formatter": {
         "indentStyle": "space",
@@ -16,9 +37,19 @@
         }
     },
     "linter": {
-        "enabled": true,
         "rules": {
-            "recommended": true,
+            "style": {
+                "noInferrableTypes": "error",
+                "noParameterAssign": "error",
+                "noUnusedTemplateLiteral": "error",
+                "noUselessElse": "error",
+                "useAsConstAssertion": "error",
+                "useDefaultParameterLast": "error",
+                "useEnumInitializers": "error",
+                "useNumberNamespace": "error",
+                "useSelfClosingElements": "error",
+                "useSingleVarDeclarator": "error"
+            },
             "suspicious": {
                 "noConsole": "error"
             }

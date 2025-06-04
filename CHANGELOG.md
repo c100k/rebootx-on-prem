@@ -4,6 +4,7 @@
 
 ## spec/v0.5.0 (unreleased)
 
+* chore: bump biome to 2.0.0
 * chore: switch from npm to pnpm
 * chore: switch from yarn to npm
 * chore: bump node to 23

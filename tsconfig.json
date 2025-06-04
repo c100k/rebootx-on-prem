@@ -1,29 +1,26 @@
 {
     "compilerOptions": {
-        /* Compiling */
         "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
         "declaration": true,
+        "exactOptionalPropertyTypes": true,
         "experimentalDecorators": true,
         "lib": ["esnext"],
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "noEmit": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "target": "ESNext",
-
-        /* Type checking */
-        "strict": true,
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "exactOptionalPropertyTypes": true,
         "noFallthroughCasesInSwitch": true,
-        "noPropertyAccessFromIndexSignature": true,
         "noImplicitOverride": true,
         "noImplicitReturns": true,
+        "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "ESNext",
         "verbatimModuleSyntax": true
     }
 }
