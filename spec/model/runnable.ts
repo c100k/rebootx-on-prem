@@ -55,12 +55,14 @@ export interface RunnableMetric {
  * The status of a runnable
  * Any intermediary status that you have on your side must be mapped to the `pending` status.
  */
-export enum RunnableStatus {
-    OFF = 'off',
-    ON = 'on',
-    PENDING = 'pending',
-    UNKNOWN = 'unknown',
-}
+export const RunnableStatus = {
+    OFF: 'off',
+    ON: 'on',
+    PENDING: 'pending',
+    UNKNOWN: 'unknown',
+} as const;
+
+export type RunnableStatus = (typeof RunnableStatus)[keyof typeof RunnableStatus];
 
 /**
  * The context in which a runnable is
