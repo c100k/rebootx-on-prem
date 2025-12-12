@@ -62,7 +62,8 @@ export const RunnableStatus = {
     UNKNOWN: 'unknown',
 } as const;
 
-export type RunnableStatus = (typeof RunnableStatus)[keyof typeof RunnableStatus];
+export type RunnableStatus =
+    (typeof RunnableStatus)[keyof typeof RunnableStatus];
 
 /**
  * The context in which a runnable is
