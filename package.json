@@ -19,6 +19,6 @@
     "devDependencies": {
         "@biomejs/biome": "^2.4.10",
         "tsoa": "^6.6.0",
-        "typescript": "^5.9.3"
+        "typescript": "^6.0.2"
     }
 }
