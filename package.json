@@ -17,7 +17,7 @@
         "test": "tsc"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.4.13",
+        "@biomejs/biome": "^2.4.14",
         "tsoa": "^6.6.0",
         "typescript": "^6.0.3"
     }
