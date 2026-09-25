@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 25
+          node-version: 26
           cache: 'pnpm'
 
       # https://github.com/actions/cache/blob/main/examples.md#linux-1
