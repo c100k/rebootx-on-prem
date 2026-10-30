@@ -7,8 +7,6 @@ import (
 	"rebootx-on-prem/http-server-go/resources/runnable"
 	"rebootx-on-prem/http-server-go/utils"
 
-	"github.com/gorilla/mux"
-
 	"openapi"
 )
 
@@ -74,8 +72,7 @@ func postRunnableRebootHandler(service runnable.Service) func(w http.ResponseWri
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
-		vars := mux.Vars(r)
-		id := vars["id"]
+		id := r.PathValue("id")
 
 		res, err := service.Reboot(id)
 		if err != nil {
@@ -93,8 +90,7 @@ func postRunnableStopHandler(service runnable.Service) func(w http.ResponseWrite
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		encoder := json.NewEncoder(w)
 
-		vars := mux.Vars(r)
-		id := vars["id"]
+		id := r.PathValue("id")
 
 		res, err := service.Stop(id)
 		if err != nil {

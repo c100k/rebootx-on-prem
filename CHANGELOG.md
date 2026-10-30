@@ -2,6 +2,8 @@
 
 ## http-server-go/v0.5.0 (unreleased)
 
+* refactor(http-server-go): use Go 1.22 ServeMux routing instead of gorilla/mux
+
 ## spec/v0.5.0 (unreleased)
 
 * chore: bump biome to 2.0.0
