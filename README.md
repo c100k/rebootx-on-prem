@@ -103,7 +103,7 @@ The server can run in different modes depending on your use case :
 - **Dashboards**
   - `fileJson` (default) : it reads the dashboards from a JSON file that must respect the schema in order to be unmarshalled into an array of `Dashboard` (see [dashboards.example.json](./data/dashboards.example.json))
 
-To override the default behavior, see `docker-compose.yml` or `config.go` and update the appropriate environment variables accordingly. 
+To override the default behavior, see `docker-compose.yml` or `config.go` and update the appropriate environment variables accordingly.
 
 ## Contributing
 

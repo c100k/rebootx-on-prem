@@ -2,48 +2,48 @@ name: quality
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push
 on: [push]
 jobs:
-  main:
-    # https://github.com/actions/runner-images
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
+    main:
+        # https://github.com/actions/runner-images
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 26
-          cache: 'pnpm'
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 26
+                  cache: "pnpm"
 
-      # https://github.com/actions/cache/blob/main/examples.md#linux-1
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+            # https://github.com/actions/cache/blob/main/examples.md#linux-1
+            - uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.cache/go-build
+                      ~/go/pkg/mod
+                  key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+                  restore-keys: |
+                      ${{ runner.os }}-go-
 
-      - name: Install dependencies
-        run: |
-          pnpm install
-          (cd impl/http-server-go && go mod vendor)
-          wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
-          java -jar openapi-generator-cli.jar generate -i ./spec/_generated/swagger.json -g go -o ./impl/http-server-go/vendor/openapi
+            - name: Install dependencies
+              run: |
+                  pnpm install
+                  (cd impl/http-server-go && go mod vendor)
+                  wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.4.0/openapi-generator-cli-7.4.0.jar -O openapi-generator-cli.jar
+                  java -jar openapi-generator-cli.jar generate -i ./spec/_generated/swagger.json -g go -o ./impl/http-server-go/vendor/openapi
 
-      - name: Lint
-        run: |
-          pnpm lint:ci
+            - name: Lint
+              run: |
+                  pnpm lint:ci
 
-      - name: Test impl/http-server-go
-        working-directory: ./impl/http-server-go
-        run: |
-          go test ./... -v
+            - name: Test impl/http-server-go
+              working-directory: ./impl/http-server-go
+              run: |
+                  go test ./... -v
 
-      - name: Test spec
-        run: |
-          pnpm test
+            - name: Test spec
+              run: |
+                  pnpm test
