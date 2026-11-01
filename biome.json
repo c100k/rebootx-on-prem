@@ -22,7 +22,13 @@
     },
     "files": {
         "ignoreUnknown": true,
-        "includes": ["**", "!**/dist/*", "!**/_generated/*", "!package.json"]
+        "includes": [
+            "**",
+            "!**/dist/*",
+            "!**/_generated/*",
+            "!**/vendor/*",
+            "!package.json"
+        ]
     },
     "formatter": {
         "indentStyle": "space",
