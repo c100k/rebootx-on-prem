@@ -5,7 +5,7 @@
 ### Tools
 
 - [Docker](https://www.docker.com)
-- [Node](https://github.com/nvm-sh/nvm)
+- [Node.js](https://nodejs.org)
 - [pnpm](https://pnpm.io)
 - [Go](https://go.dev)
 
